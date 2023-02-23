@@ -1,0 +1,16 @@
+
+educational-project-3/.idea/
+
+educational-project-3/Library/
+
+educational-project-3/Logs/
+
+educational-project-3/obj/
+
+educational-project-3/Temp/
+
+*.csproj
+
+*.sln
+
+educational-project-3/UserSettings/

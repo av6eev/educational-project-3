@@ -8,6 +8,5 @@ namespace Descriptions.Base
     public class DescriptionsCollection
     {
         public WorldDescriptionSo World;
-        public BotCommandsDescriptionSo BotCommands;
     }
 }

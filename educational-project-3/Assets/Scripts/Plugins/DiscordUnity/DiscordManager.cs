@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Bot;
 using Game;
 using Plugins.DiscordUnity.DiscordUnity.API;
-using Plugins.DiscordUnity.DiscordUnity.Rest;
 using Plugins.DiscordUnity.DiscordUnity.State;
 using UnityEngine;
 using Utilities;
@@ -20,6 +17,8 @@ namespace Plugins.DiscordUnity
         private readonly GameManager _manager = new();
         public GameView View;
         private readonly ControllerEngine _controllerEngine = new();
+
+        private BotModel _botModel;
     
         #region Singleton
         public static DiscordManager Singleton { get; private set; }
@@ -50,17 +49,19 @@ namespace Plugins.DiscordUnity
         protected virtual async void Start()
         {
             Debug.Log("Starting Discord Unity ...");
-            
-            _manager.BotModel = new BotModel(_manager.GameDescriptions.BotCommands);
+
             _manager.GameView = View;
             _manager.GameDescriptions = new GameDescriptions(View.DescriptionsCollection);
+            
+            _botModel = new BotModel();
+            _manager.BotModel = _botModel;
             
             _controllerEngine.Add(new BotPresenter(_manager.BotModel, _manager));
             
             DiscordAPI.Logger = new DiscordLogger(LogLevel);
             DiscordAPI.RegisterEventsHandler(this);
             await DiscordAPI.StartWithBot(BotToken);
-            
+
             _controllerEngine.Activate();
             
             Debug.Log("DiscordUnity started.");
@@ -139,27 +140,9 @@ namespace Plugins.DiscordUnity
         }
 
         //message events
-        public async void OnMessageCreated(DiscordMessage message)
+        public void OnMessageCreated(DiscordMessage message)
         {
-            if (message.Author.Bot == null || message.Author.Bot == false) 
-            {
-                Debug.Log("Message send: " + message.Content + ", from: " + message.Author.Username + ", messageID: " + message.Id);
-                Debug.Log("Server name: " + message.ChannelId);
-                
-                var botCommands = _manager.GameDescriptions.BotCommands;
-                
-                if (message.Content.Contains(botCommands.CompleteCommand(botCommands.CheckHealth)))
-                {
-                    await DiscordUnity.Rest.DiscordAPI.CreateMessage(message.ChannelId, botCommands.CheckHealthAnswer, null, false, null, null, null, null);
-                }  
-            }
-        
-            if (message.Author.Bot == true && message.Content.Contains("Pong"))
-            {
-                Debug.Log("Message send: " + message.Content + ", from: " + message.Author.Username + ", messageID: " + message.Id);
-
-                await AddEmoji(message.ChannelId, message.Id, ";bluescroll:1078392590535249970");
-            }
+            _botModel.CheckRequestMessage(message);
         }
 
         public void OnMessageUpdated(DiscordMessage message)
@@ -170,8 +153,7 @@ namespace Plugins.DiscordUnity
         public void OnMessageDeleted(DiscordMessage message)
         {
             Debug.Log("Message Deleted...");
-            DiscordUnity.Rest.DiscordAPI.CreateMessage(message.ChannelId, "Message Deleted: " + message.Content, null, false, null, null, null, null);
-
+            // DiscordUnity.Rest.DiscordAPI.CreateMessage(message.ChannelId, "Message Deleted: " + message.Content, null, false, null, null, null, null);
         }
 
         public void OnMessageDeletedBulk(string[] messageIds)
@@ -181,25 +163,25 @@ namespace Plugins.DiscordUnity
 
         public async void OnMessageReactionAdded(DiscordMessageReaction messageReaction)
         {
-            if(messageReaction.Member.User.Bot == null || messageReaction.Member.User.Bot == false)
-            {
-                Debug.Log("reaction added to: " + messageReaction.MessageId + ", from: " + messageReaction.UserId + ", reaction: " + messageReaction.Emoji.User + ", " + messageReaction.Emoji.User);
-
-                await DiscordUnity.Rest.DiscordAPI.CreateMessage(messageReaction.ChannelId, "User: " + messageReaction.Member.User.Username + " sent Emoji: " + messageReaction.Emoji.Name, null, false, null, null, null, null);
-
-                RestResult<DiscordUser[]> reactionResult;
-                reactionResult = await DiscordUnity.Rest.DiscordAPI.GetReactions(messageReaction.ChannelId, messageReaction.MessageId, "👍");
-
-                DiscordUser[] array;
-                array = reactionResult.Data.ToArray();
-
-                for (int i = 0; i < array.Length; i++)
-                {
-                    Debug.Log(array[i].Username + ", has entered thumbs up");
-                }
-
-                Debug.Log(messageReaction.MessageId);
-            }
+            // if(messageReaction.Member.User.Bot == null || messageReaction.Member.User.Bot == false)
+            // {
+            //     Debug.Log("reaction added to: " + messageReaction.MessageId + ", from: " + messageReaction.UserId + ", reaction: " + messageReaction.Emoji.User + ", " + messageReaction.Emoji.User);
+            //
+            //     await DiscordUnity.Rest.DiscordAPI.CreateMessage(messageReaction.ChannelId, "User: " + messageReaction.Member.User.Username + " sent Emoji: " + messageReaction.Emoji.Name, null, false, null, null, null, null);
+            //
+            //     RestResult<DiscordUser[]> reactionResult;
+            //     reactionResult = await DiscordUnity.Rest.DiscordAPI.GetReactions(messageReaction.ChannelId, messageReaction.MessageId, "👍");
+            //
+            //     DiscordUser[] array;
+            //     array = reactionResult.Data.ToArray();
+            //
+            //     for (int i = 0; i < array.Length; i++)
+            //     {
+            //         Debug.Log(array[i].Username + ", has entered thumbs up");
+            //     }
+            //
+            //     Debug.Log(messageReaction.MessageId);
+            // }
         }
 
         public void OnMessageReactionRemoved(DiscordMessageReaction messageReaction)
@@ -237,11 +219,6 @@ namespace Plugins.DiscordUnity
         public void OnUserUpdated(DiscordUser user)
         {
 
-        }
-
-        private async Task AddEmoji(string ChannelId, string messageId, string emoji)
-        {
-            await DiscordUnity.Rest.DiscordAPI.CreateReaction(ChannelId, messageId, emoji);
         }
 
         #region Logger

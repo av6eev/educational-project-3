@@ -1,24 +1,17 @@
-﻿using System;
-using Descriptions.Base;
-using UnityEngine;
-
-namespace Descriptions.BotCommands
+﻿namespace Descriptions.BotCommands
 {
-    [Serializable]
-    public class BotCommandsDescription : IDescription
+    public static class BotCommandsDescription
     {
-        [Header("Base")]
-        public string Id;
-        public string CommandSymbol;
-        
-        [Header("Commands")]
-        public string StartGame;
-        public string CheckHealth;
-        
-        [Header("Commands Answers")]
-        public string StartGameAnswer;
-        public string CheckHealthAnswer;
-        public string CompleteCommand(string command)
+        private const string CommandSymbol = ".";
+        public const string DefaultNoCommand = "Команда не найдена!";
+
+        public const string StartGame = "start";
+        public const string CheckHealth = "ping";
+
+        public const string StartGameResponse = "Игра началась! Выберите сторону!";
+        public const string CheckHealthResponse = "Pong";
+
+        public static string CompleteCommand(string command)
         {
             return $"{CommandSymbol}{command}";
         }

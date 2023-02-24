@@ -1,6 +1,6 @@
 ﻿namespace Utilities
 {
-    public interface IController
+    public interface IPresenter
     {
         void Deactivate();
         void Activate();

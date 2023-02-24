@@ -2,7 +2,7 @@
 {
     public static class BotCommandsDescription
     {
-        private const string CommandSymbol = ".";
+        public const string CommandSymbol = ".";
         public const string DefaultNoCommand = "Команда не найдена!";
 
         public const string StartGame = "start";

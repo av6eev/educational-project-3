@@ -1,19 +1,19 @@
-﻿using Game;
+using Game;
 using Utilities;
 
-namespace Bot
+namespace Player
 {
-    public class BotPresenter : IPresenter
+    public class PlayerPresenter : IPresenter
     {
-        private readonly BotModel _model;
+        private readonly PlayerModel _model;
         private readonly GameManager _manager;
 
-        public BotPresenter(BotModel model, GameManager manager)
+        public PlayerPresenter(PlayerModel model, GameManager manager)
         {
             _model = model;
             _manager = manager;
         }
-        
+
         public void Deactivate()
         {
             

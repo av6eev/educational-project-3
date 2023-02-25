@@ -1,5 +1,7 @@
 ﻿using System;
 using Bot;
+using Floor;
+using Floor.System;
 using Game;
 using Plugins.DiscordUnity.DiscordUnity.API;
 using Plugins.DiscordUnity.DiscordUnity.State;
@@ -17,6 +19,7 @@ namespace Plugins.DiscordUnity
         private readonly GameManager _manager = new();
         public GameView View;
         private readonly PresenterEngine _presenterEngine = new();
+        private readonly SystemEngine _systemEngine = new();
 
         private BotModel _botModel;
     
@@ -55,21 +58,33 @@ namespace Plugins.DiscordUnity
             
             _botModel = new BotModel(_manager);
             _manager.BotModel = _botModel;
+
+            var floorModel = new FloorModel(_manager.GameDescriptions.World);
+            _manager.FloorModel = floorModel;
             
+            _systemEngine.Add(SystemTypes.GenerateFloorSystem, new GenerateFloorSystem(_manager.FloorModel, _manager, EndGeneration));
+
             _presenterEngine.Add(new BotPresenter(_manager.BotModel, _manager));
-            
+            _presenterEngine.Add(new FloorPresenter(_manager.FloorModel, _manager.GameView.FloorView, _manager));
+                        
             DiscordAPI.Logger = new DiscordLogger(LogLevel);
             DiscordAPI.RegisterEventsHandler(this);
             await DiscordAPI.StartWithBot(BotToken);
-
-            _presenterEngine.Activate();
             
+            _presenterEngine.Activate();
+
             Debug.Log("Started!");
         }
 
         private void Update()
         {
+            _systemEngine.Update(Time.deltaTime);
             DiscordAPI.Update();
+        }
+        
+        private void EndGeneration()
+        {
+            _systemEngine.Remove(SystemTypes.GenerateFloorSystem);
         }
 
         public async void OnServerJoined(DiscordServer server)

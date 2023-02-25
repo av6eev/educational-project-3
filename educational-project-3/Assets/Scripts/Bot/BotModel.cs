@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Descriptions.BotCommands;
 using Game;
 using Player;
 using Plugins.DiscordUnity.DiscordUnity.State;
@@ -13,11 +12,15 @@ namespace Bot
     
     public class BotModel
     {
+        public Action<string> OnPlayerStarted;
+        public Action<string> OnPlayerLeft;
+        
         private const string BotId = "1078053498404474942";
         private DiscordMessageReaction _messageReaction;
         public readonly Dictionary<string, PlayerModel> ActiveUsers = new();
 
         private readonly GameManager _manager;
+        private readonly Dictionary<string, PlayerPresenter> _playerPresenters = new();
 
         public BotModel(GameManager manager)
         {
@@ -70,10 +73,14 @@ namespace Bot
                 if (!CheckUser(user.Key)) continue;
             
                 var model = new PlayerModel(user.Key.Id, user.Value);
-                var presenter = new PlayerPresenter(model, _manager);
-                presenter.Activate();
+                var presenter = new PlayerPresenter(model, _manager, _manager.GameView.PlayerView);
+                
+                _playerPresenters.Add(model.Id, presenter);
+                _playerPresenters[model.Id].Activate();
                 
                 ActiveUsers.Add(model.Id, model);
+                
+                OnPlayerStarted?.Invoke(model.Id);
             }
 
             BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
@@ -96,7 +103,13 @@ namespace Bot
                 if (emojiName != ActiveUsers[userId].TeamName) return;
                 
                 await DiscordAPI.CreateMessage(_messageReaction.ChannelId, $"{userId} удален из {ActiveUsers[userId].TeamName} команды", null, false, null, null, null, null);
+
+                OnPlayerLeft?.Invoke(userId);
                 ActiveUsers.Remove(userId);
+                
+                _playerPresenters[userId].Deactivate();
+                _playerPresenters.Remove(userId);
+                
                 BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
             }
         }

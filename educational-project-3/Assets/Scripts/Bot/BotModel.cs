@@ -12,7 +12,7 @@ namespace Bot
     
     public class BotModel
     {
-        public Action<string> OnPlayerStarted;
+        public Action<string> OnPlayerEntered;
         public Action<string> OnPlayerLeft;
         
         private const string BotId = "1078053498404474942";
@@ -20,7 +20,6 @@ namespace Bot
         public readonly Dictionary<string, PlayerModel> ActiveUsers = new();
 
         private readonly GameManager _manager;
-        private readonly Dictionary<string, PlayerPresenter> _playerPresenters = new();
 
         public BotModel(GameManager manager)
         {
@@ -50,6 +49,7 @@ namespace Bot
         public async void AddUsers(DiscordMessageReaction reaction)
         {
             _messageReaction = reaction;
+
             if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
 
             var leftTeam = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, "⚪");
@@ -67,33 +67,95 @@ namespace Bot
             {
                 teams.Add(user, "⚫");
             }
+
+            foreach (var model in from user in teams where CheckUser(user.Key) select new PlayerModel(user.Key.Id, user.Value, user.Key.Username))
+            {
+                ActiveUsers.Add(model.Id, model);
+            }
+
+            await BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
+
+            if (ActiveUsers.Count == 2)
+            {
+                _manager.GameModel.GameStage = GameStage.Choosing;
+            }
+        }
+
+        public async void ChooseClass(DiscordMessageReaction reaction)
+        {
+            if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
+            
+            var melee = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, "🗡");
+            var archer = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, "🏹");
+            var mage = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, "🧙");
+            var meleeArray = melee?.Data.ToArray();
+            var archerArray = archer?.Data.ToArray();
+            var mageArray = mage?.Data.ToArray();
+            var teams = new Dictionary<DiscordUser, string>();
+
+            foreach (var user in meleeArray!)
+            {
+                teams.Add(user, "🗡");
+            }
+            
+            foreach (var user in archerArray!)
+            {
+                teams.Add(user, "🏹");
+            }
+            
+            foreach (var user in mageArray!)
+            {
+                teams.Add(user, "🧙");
+            }
             
             foreach (var user in teams)
             {
-                if (!CheckUser(user.Key)) continue;
-            
-                var model = new PlayerModel(user.Key.Id, user.Value);
-                var presenter = new PlayerPresenter(model, _manager, _manager.GameView.PlayerView);
-                
-                _playerPresenters.Add(model.Id, presenter);
-                _playerPresenters[model.Id].Activate();
-                
-                ActiveUsers.Add(model.Id, model);
-                
-                OnPlayerStarted?.Invoke(model.Id);
-            }
+                if (!CheckUserClass(user, reaction)) continue;
 
-            BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
+                var model = ActiveUsers[user.Key.Id];
+                PlayerView prefab = null;
+                
+                switch (user.Value)
+                {
+                    case "🗡":
+                        model.ClassType = PlayerClassType.Melee;
+                        prefab = _manager.GameDescriptions.Players[PlayerClassType.Melee].Prefab;
+                        break;
+                    case "🏹":
+                        model.ClassType = PlayerClassType.Archer;
+                        prefab = _manager.GameDescriptions.Players[PlayerClassType.Archer].Prefab;
+                        break;
+                    case "🧙":
+                        model.ClassType = PlayerClassType.Mage;
+                        prefab = _manager.GameDescriptions.Players[PlayerClassType.Mage].Prefab;
+                        break;
+                    default:
+                        model.ClassType = PlayerClassType.None;
+                        break;
+                }
+
+                _manager.GameView.PlayerView = prefab;
+        
+                OnPlayerEntered?.Invoke(model.Id);
+            }
         }
 
         private bool CheckUser(DiscordUser user)
         {
-            if (user.Id.Equals(BotId) || ActiveUsers.ContainsKey(user.Id))
+            return !user.Id.Equals(BotId) && !ActiveUsers.ContainsKey(user.Id);
+        }
+        
+        private bool CheckUserClass(KeyValuePair<DiscordUser, string> user, DiscordMessageReaction reaction)
+        {
+            if (!user.Key.Id.Equals(BotId) && ActiveUsers.ContainsKey(user.Key.Id))
             {
-                return false;
+                if (reaction.Emoji.Name == user.Value && ActiveUsers[user.Key.Id].ClassType == PlayerClassType.None)
+                {
+                    return true;
+                }
             }
 
-            return true;
+            return false;
         }
 
         public async void RemoveUser(string userId, string emojiName)
@@ -107,10 +169,7 @@ namespace Bot
                 OnPlayerLeft?.Invoke(userId);
                 ActiveUsers.Remove(userId);
                 
-                _playerPresenters[userId].Deactivate();
-                _playerPresenters.Remove(userId);
-                
-                BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
+                await BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
             }
         }
     }

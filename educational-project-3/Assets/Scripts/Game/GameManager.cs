@@ -10,6 +10,7 @@ namespace Game
         public GameView GameView;
         public GameDescriptions GameDescriptions;
         
+        public GameModel GameModel;
         public BotModel BotModel;
         public PlayerModel PlayerModel;
         public FloorModel FloorModel;

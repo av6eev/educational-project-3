@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Bot;
 using Floor;
 using Floor.System;
@@ -15,9 +16,9 @@ namespace Plugins.DiscordUnity
     {
         [SerializeField] private string BotToken;
         public DiscordLogLevel LogLevel = DiscordLogLevel.None;
+        public GameView View;
         
         private readonly GameManager _manager = new();
-        public GameView View;
         private readonly PresenterEngine _presenterEngine = new();
         private readonly SystemEngine _systemEngine = new();
 
@@ -55,6 +56,9 @@ namespace Plugins.DiscordUnity
 
             _manager.GameView = View;
             _manager.GameDescriptions = new GameDescriptions(View.DescriptionsCollection);
+
+            var gameModel = new GameModel();
+            _manager.GameModel = gameModel;
             
             _botModel = new BotModel(_manager);
             _manager.BotModel = _botModel;
@@ -178,7 +182,17 @@ namespace Plugins.DiscordUnity
 
         public void OnMessageReactionAdded(DiscordMessageReaction messageReaction)
         {
-            _botModel.AddUsers(messageReaction);
+            switch (_manager.GameModel.GameStage)
+            {
+                case GameStage.Preparing:
+                    _botModel.AddUsers(messageReaction);
+                    break;
+                case GameStage.Choosing:
+                    _botModel.ChooseClass(messageReaction);
+                    break;
+                case GameStage.Started:
+                    break;
+            }
         }
 
         public void OnMessageReactionRemoved(DiscordMessageReaction messageReaction)

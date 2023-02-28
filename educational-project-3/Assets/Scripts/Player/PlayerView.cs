@@ -1,30 +1,26 @@
-using System.Collections.Generic;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Player
 {
     public class PlayerView : MonoBehaviour
     {
-        public Transform PlayerPrefab;
-        public readonly Dictionary<string, Transform> Players = new();
         public TextMeshPro Text;
-
-        public void InstantiatePlayer(string id, Vector3 position, float angle)
+        public GameObject Root;
+        
+        public void DestroyPlayer()
         {
-            var player = Instantiate(PlayerPrefab, new Vector3(position.x, 0.29f, position.z), Quaternion.Euler(0f, angle, 0f));
-            
-            Text.text = id;
-            Players.Add(id, player);
+            Destroy(Root);
+        }
+
+        public void Disable()
+        {
+            Root.SetActive(false);
         }
         
-        public void DestroyPlayer(string id)
+        public void Enable()
         {
-            if (!Players.ContainsKey(id)) return;
-            
-            Destroy(Players[id].gameObject);
-            Players.Remove(id);
+            Root.SetActive(true);
         }
     }
 }

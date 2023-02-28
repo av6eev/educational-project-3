@@ -1,4 +1,7 @@
-﻿using Game;
+﻿using System.Collections.Generic;
+using Floor;
+using Game;
+using Player;
 using UnityEngine;
 using Utilities;
 
@@ -8,6 +11,7 @@ namespace Bot
     {
         private readonly BotModel _model;
         private readonly GameManager _manager;
+        private readonly Dictionary<string, PlayerPresenter> _playerPresenters = new();
 
         public BotPresenter(BotModel model, GameManager manager)
         {
@@ -17,36 +21,52 @@ namespace Bot
         
         public void Deactivate()
         {
-            _model.OnPlayerStarted -= CreatePlayer;
+            _model.OnPlayerEntered -= PlayerEntered;
             _model.OnPlayerLeft -= RemovePlayer;
         }
 
         public void Activate()
         {
-            _model.OnPlayerStarted += CreatePlayer;
+            _model.OnPlayerEntered += PlayerEntered;
             _model.OnPlayerLeft += RemovePlayer;
         }
 
-        private void CreatePlayer(string playerId)
+        private void PlayerEntered(string playerId)
         {
-            if (!_manager.FloorModel.Cells[_manager.FloorModel.FirstStartPosition].IsActive)
+            var floorModel = _manager.FloorModel;
+            
+            if (!floorModel.Cells[floorModel.FirstStartPosition].IsActive)
             {
-                _model.ActiveUsers[playerId].CreatePlayer(playerId, _manager.FloorModel.FirstStartPosition, 45);
-                _manager.FloorModel.Cells[_manager.FloorModel.FirstStartPosition].IsActive = true;
+                CreatePlayer(playerId, floorModel, floorModel.FirstStartPosition, 45);
             }
             else
             {
-                _model.ActiveUsers[playerId].CreatePlayer(playerId, _manager.FloorModel.SecondStartPosition, -135);
-                _manager.FloorModel.Cells[_manager.FloorModel.SecondStartPosition].IsActive = true;
-            }    
+                CreatePlayer(playerId, floorModel, floorModel.SecondStartPosition, -135);
+            }
         }
-        
+
+        private void CreatePlayer(string playerId, FloorModel model, Vector3 position, float angle)
+        {
+            var playerModel = _model.ActiveUsers[playerId];
+            var presenter = new PlayerPresenter(playerModel, _manager, _manager.GameView.InstantiatePlayer(position, angle));
+            
+            _playerPresenters.Add(playerModel.Id, presenter);
+            presenter.Activate();
+            
+            playerModel.CreatePlayer(position);
+            
+            model.Cells[position].IsActive = true;
+        }
+
         private void RemovePlayer(string playerId)
         {
             if (_model.ActiveUsers.Count == 0 && !_model.ActiveUsers.ContainsKey(playerId)) return;
-
+            
+            _playerPresenters[playerId].Deactivate();
+            _playerPresenters.Remove(playerId);
+            
             _manager.FloorModel.Cells[_model.ActiveUsers[playerId].Position].IsActive = false;
-            _model.ActiveUsers[playerId].RemovePlayer(playerId);
+            _model.ActiveUsers[playerId].RemovePlayer();
         }
     }
 }

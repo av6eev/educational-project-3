@@ -14,16 +14,20 @@ namespace Bot
         public static readonly Dictionary<string, Action<DiscordMessage>> RequestCommands = new()
         {
             { BotCommandsDescription.CompleteCommand(BotCommandsDescription.CheckHealth), CheckHealth },
-            { BotCommandsDescription.CompleteCommand(BotCommandsDescription.StartGame), StartGame }
+            { BotCommandsDescription.CompleteCommand(BotCommandsDescription.StartGame), StartGame },
+            { BotCommandsDescription.CompleteCommand(BotCommandsDescription.PrepareToGame), PrepareToGame },
+            { BotCommandsDescription.CompleteCommand(BotCommandsDescription.ChooseClass), ChooseClass },
         };
-        
+
         public static readonly Dictionary<string, Action<DiscordMessage>> ResponseCommands = new()
         {
             { BotCommandsDescription.CheckHealthResponse, CheckHealthResponse },
-            { BotCommandsDescription.StartGameResponse, StartGameResponse }
+            { BotCommandsDescription.StartGameResponse, StartGameResponse },
+            { BotCommandsDescription.PrepareToGameResponse, PrepareToGameResponse },
+            { BotCommandsDescription.ChooseClassResponse, ChooseClassResponse },
         };
-
-        public static async void ShowActivePlayers(DiscordMessageReaction reaction, Dictionary<string, PlayerModel> activeUsers)
+        
+        public static async Task ShowActivePlayers(DiscordMessageReaction reaction, Dictionary<string, PlayerModel> activeUsers)
         {
             await DiscordAPI.CreateMessage(reaction.ChannelId, "Составы команд: \n", null, false, null, null, null, null);
 
@@ -42,9 +46,30 @@ namespace Bot
         
         private static async void StartGameResponse(DiscordMessage message)
         {
+            await AddEmoji(message.ChannelId, message.Id, "😄");
+        }
+
+        private static async void ChooseClass(DiscordMessage message)
+        {
+            await DiscordAPI.CreateMessage(message.ChannelId, BotCommandsDescription.ChooseClassResponse, null, false, null, null, null, null);
+        }
+        
+        private static async void ChooseClassResponse(DiscordMessage message)
+        {
+            await AddEmoji(message.ChannelId, message.Id, "🗡");
+            await AddEmoji(message.ChannelId, message.Id, "🏹");
+            await AddEmoji(message.ChannelId, message.Id, "🧙");
+        }
+        
+        private static async void PrepareToGame(DiscordMessage message)
+        {
+            await DiscordAPI.CreateMessage(message.ChannelId, BotCommandsDescription.PrepareToGameResponse, null, false, null, null, null, null);
+        }
+        
+        private static async void PrepareToGameResponse(DiscordMessage message)
+        {
             Debug.Log(message.Id);
             await AddEmoji(message.ChannelId, message.Id, "⚪");
-            await Task.Delay(1000);
             await AddEmoji(message.ChannelId, message.Id, "⚫");
         }
 
@@ -61,6 +86,7 @@ namespace Bot
         private static async Task AddEmoji(string channelId, string messageId, string emoji)
         {
             await DiscordAPI.CreateReaction(channelId, messageId, emoji);
+            await Task.Delay(500);
         }
     }
 }

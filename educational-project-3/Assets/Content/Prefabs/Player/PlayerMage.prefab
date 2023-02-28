@@ -96,6 +96,7 @@ Transform:
   m_Children:
   - {fileID: 3857822896749078853}
   - {fileID: 3375701219266055434}
+  - {fileID: 3070971818923060126}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -111,8 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c68a833cb24c406d894850143996ce02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 3619604669763629951}
   Text: {fileID: 8504845794177066357}
+  Root: {fileID: 3619604669763629950}
 --- !u!111 &981902252002005186
 Animation:
   m_ObjectHideFlags: 0
@@ -5063,7 +5064,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3375701219266055434}
+  m_Father: {fileID: 3619604669763629951}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -5275,10 +5276,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 209271e914d490342a24b9a90550c173,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3070971818923060126}
     - targetCorrespondingSourceObject: {fileID: 719425371130587917, guid: 209271e914d490342a24b9a90550c173,
         type: 3}
       insertIndex: -1

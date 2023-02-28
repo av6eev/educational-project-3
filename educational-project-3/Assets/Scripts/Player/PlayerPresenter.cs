@@ -25,19 +25,23 @@ namespace Player
 
         public void Activate()
         {
+            _view.Disable();
+            
             _model.OnPlayerCreated += InitPlayer;
             _model.OnPlayerRemoved += DestroyPlayer;
         }
 
-        private void InitPlayer(string id, Vector3 position, float angle)
+        private void InitPlayer(Vector3 position)
         {
             _model.SetPosition(position);
-            _view.InstantiatePlayer(id, position, angle);
+            
+            _view.Text.text = _model.Name;
+            _view.Enable();
         }
         
-        private void DestroyPlayer(string id)
+        private void DestroyPlayer()
         {
-            _view.DestroyPlayer(id);
+            _view.DestroyPlayer();
         }
     }
 }

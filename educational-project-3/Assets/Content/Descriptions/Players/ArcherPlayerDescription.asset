@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d313b4e7d83c45788809b9a3055c2f79, type: 3}
-  m_Name: BotCommands
+  m_Script: {fileID: 11500000, guid: de65d09b91e945f2b510ad0e4d765d5d, type: 3}
+  m_Name: ArcherPlayerDescription
   m_EditorClassIdentifier: 
   Description:
-    Id: 1
-    CommandSymbol: .
-    StartGame: start
-    CheckHealth: ping
-    StartGameAnswer: 
-    CheckHealthAnswer: Pong!
+    Type: 0
+    Prefab: {fileID: 3619604669763629948, guid: 599cd4b2cb9678b4398109afd6ef7df5,
+      type: 3}
+    AttackDamage: 0
+    Resistance: 0

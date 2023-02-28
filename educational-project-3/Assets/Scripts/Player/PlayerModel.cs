@@ -5,17 +5,21 @@ namespace Player
 {
     public class PlayerModel
     {
-        public event Action<string, Vector3, float> OnPlayerCreated;
-        public event Action<string> OnPlayerRemoved;
+        public event Action<Vector3> OnPlayerCreated;
+        public event Action OnPlayerRemoved;
         
         public Vector3 Position { get; private set; } = Vector3.zero;
         public string Id { get; }
         public string TeamName { get; }
+        public string Name { get; }
+        public PlayerClassType ClassType;
         
-        public PlayerModel(string id, string teamName)
+        public PlayerModel(string id, string teamName, string name)
         {
             Id = id;
             TeamName = teamName;
+            Name = name;
+            ClassType = PlayerClassType.None;
         }
 
         public void SetPosition(Vector3 newPosition)
@@ -23,14 +27,14 @@ namespace Player
             Position = newPosition;
         }
 
-        public void CreatePlayer(string id, Vector3 position, float angle)
+        public void CreatePlayer(Vector3 position)
         {
-            OnPlayerCreated?.Invoke(id, position, angle);
+            OnPlayerCreated?.Invoke(position);
         }
         
-        public void RemovePlayer(string id)
+        public void RemovePlayer()
         {
-            OnPlayerRemoved?.Invoke(id);
+            OnPlayerRemoved?.Invoke();
         }
     }
 }

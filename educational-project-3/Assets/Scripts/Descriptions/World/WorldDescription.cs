@@ -9,8 +9,15 @@ namespace Descriptions.World
     {
         public string Id;
         
-        [Header("World Parameters")]
+        [Header("Floor Parameters")]
         public int X = 30;
         public int Z = 30;
+
+        [Header("Game Parameters")] 
+        public int MaxPlayersCount = 1;
+        
+        [Header("Game UI Parameters")] 
+        public string TurnCooldownText = "твой ход! Оставшееся время: ";
+        public int TurnCooldown = 30;
     }
 }

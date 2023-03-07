@@ -14,6 +14,7 @@ namespace Bot
     {
         public Action<string> OnPlayerEntered;
         public Action<string> OnPlayerLeft;
+        public Action OnGameStarting;
         
         private const string BotId = "1078053498404474942";
         private DiscordMessageReaction _messageReaction;
@@ -75,7 +76,7 @@ namespace Bot
 
             await BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
 
-            if (ActiveUsers.Count == 1)
+            if (ActiveUsers.Count == _manager.GameDescriptions.World.MaxPlayersCount)
             {
                 _manager.GameModel.GameStage = GameStage.Choosing;
             }
@@ -137,6 +138,15 @@ namespace Bot
                 _manager.GameView.PlayerView = prefab;
 
                 OnPlayerEntered?.Invoke(model.Id);
+            }
+            
+            if (ActiveUsers.Values.Count(user => user.ClassType != PlayerClassType.None) == _manager.GameDescriptions.World.MaxPlayersCount)
+            {
+                _manager.GameModel.GameStage = GameStage.Started;
+                
+                await BotCommandHelper.OnGameStarted(_messageReaction.ChannelId);
+                
+                OnGameStarting?.Invoke();
             }
         }
 

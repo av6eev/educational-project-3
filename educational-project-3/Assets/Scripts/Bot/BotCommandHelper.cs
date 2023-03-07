@@ -46,6 +46,12 @@ namespace Bot
             await DiscordAPI.CreateMessage(reaction.ChannelId, "---------------\n", null, false, null, null, null, null);
         }
         
+        public static async Task OnGameStarted(string channelId)
+        {
+            await DiscordAPI.CreateMessage(channelId, BotCommandsDescription.StartGameResponse, null, false, null, null, null, null);
+            await DiscordAPI.CreateMessage(channelId, "---------------\n", null, false, null, null, null, null);
+        }
+        
         private static async void StartGame(DiscordMessage message)
         {
             await DiscordAPI.CreateMessage(message.ChannelId, BotCommandsDescription.StartGameResponse, null, false, null, null, null, null);

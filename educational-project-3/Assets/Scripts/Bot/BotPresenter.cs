@@ -23,12 +23,22 @@ namespace Bot
         {
             _model.OnPlayerEntered -= PlayerEntered;
             _model.OnPlayerLeft -= RemovePlayer;
+            _model.OnGameStarting -= StartGame;
         }
 
         public void Activate()
         {
             _model.OnPlayerEntered += PlayerEntered;
             _model.OnPlayerLeft += RemovePlayer;
+            _model.OnGameStarting += StartGame;
+        }
+
+        private void StartGame()
+        {
+            var presenter = new GamePresenter(_manager.GameModel, _manager.GameView, _manager);
+            presenter.Activate();
+            
+            _manager.GameModel.StartGame(_model.ActiveUsers);
         }
 
         private void PlayerEntered(string playerId)

@@ -52,20 +52,20 @@ namespace Bot
 
             if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
 
-            var leftTeam = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, "⚪");
-            var rightTeam = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, "⚫");
+            var leftTeam = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.FirstTeamEmoji);
+            var rightTeam = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.SecondTeamEmoji);
             var leftTeamToArray = leftTeam.Data.ToArray();
             var rightTeamToArray = rightTeam.Data.ToArray();
             var teams = new Dictionary<DiscordUser, string>();
 
             foreach (var user in leftTeamToArray)
             {
-                teams.Add(user, "⚪");
+                teams.Add(user, BotCommandHelper.FirstTeamEmoji);
             }
             
             foreach (var user in rightTeamToArray)
             {
-                teams.Add(user, "⚫");
+                teams.Add(user, BotCommandHelper.SecondTeamEmoji);
             }
 
             foreach (var model in from user in teams where CheckUser(user.Key) select new PlayerModel(user.Key.Id, user.Value, user.Key.Username))
@@ -75,7 +75,7 @@ namespace Bot
 
             await BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
 
-            if (ActiveUsers.Count == 2)
+            if (ActiveUsers.Count == 1)
             {
                 _manager.GameModel.GameStage = GameStage.Choosing;
             }
@@ -85,9 +85,9 @@ namespace Bot
         {
             if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
             
-            var melee = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, "🗡");
-            var archer = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, "🏹");
-            var mage = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, "🧙");
+            var melee = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.MeleeEmoji);
+            var archer = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.ArcherEmoji);
+            var mage = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.MageEmoji);
             var meleeArray = melee?.Data.ToArray();
             var archerArray = archer?.Data.ToArray();
             var mageArray = mage?.Data.ToArray();
@@ -95,17 +95,17 @@ namespace Bot
 
             foreach (var user in meleeArray!)
             {
-                teams.Add(user, "🗡");
+                teams.Add(user, BotCommandHelper.MeleeEmoji);
             }
             
             foreach (var user in archerArray!)
             {
-                teams.Add(user, "🏹");
+                teams.Add(user, BotCommandHelper.ArcherEmoji);
             }
             
             foreach (var user in mageArray!)
             {
-                teams.Add(user, "🧙");
+                teams.Add(user, BotCommandHelper.MageEmoji);
             }
             
             foreach (var user in teams)
@@ -117,15 +117,15 @@ namespace Bot
                 
                 switch (user.Value)
                 {
-                    case "🗡":
+                    case BotCommandHelper.MeleeEmoji:
                         model.ClassType = PlayerClassType.Melee;
                         prefab = _manager.GameDescriptions.Players[PlayerClassType.Melee].Prefab;
                         break;
-                    case "🏹":
+                    case BotCommandHelper.ArcherEmoji:
                         model.ClassType = PlayerClassType.Archer;
                         prefab = _manager.GameDescriptions.Players[PlayerClassType.Archer].Prefab;
                         break;
-                    case "🧙":
+                    case BotCommandHelper.MageEmoji:
                         model.ClassType = PlayerClassType.Mage;
                         prefab = _manager.GameDescriptions.Players[PlayerClassType.Mage].Prefab;
                         break;
@@ -135,7 +135,7 @@ namespace Bot
                 }
 
                 _manager.GameView.PlayerView = prefab;
-        
+
                 OnPlayerEntered?.Invoke(model.Id);
             }
         }
@@ -147,29 +147,38 @@ namespace Bot
         
         private bool CheckUserClass(KeyValuePair<DiscordUser, string> user, DiscordMessageReaction reaction)
         {
-            if (!user.Key.Id.Equals(BotId) && ActiveUsers.ContainsKey(user.Key.Id))
-            {
-                if (reaction.Emoji.Name == user.Value && ActiveUsers[user.Key.Id].ClassType == PlayerClassType.None)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            if (user.Key.Id.Equals(BotId) || !ActiveUsers.ContainsKey(user.Key.Id)) return false;
+            
+            return reaction.Emoji.Name == user.Value && ActiveUsers[user.Key.Id].ClassType == PlayerClassType.None;
         }
 
         public async void RemoveUser(string userId, string emojiName)
         {
-            if (ActiveUsers.ContainsKey(userId))
+            if (!ActiveUsers.ContainsKey(userId)) return;
+            
+            switch (_manager.GameModel.GameStage)
             {
-                if (emojiName != ActiveUsers[userId].TeamName) return;
+                case GameStage.Preparing:
+                    if (emojiName != ActiveUsers[userId].TeamName) return;
                 
-                await DiscordAPI.CreateMessage(_messageReaction.ChannelId, $"{userId} удален из {ActiveUsers[userId].TeamName} команды", null, false, null, null, null, null);
+                    await DiscordAPI.CreateMessage(_messageReaction.ChannelId, $"{userId} удален из {ActiveUsers[userId].TeamName} команды", null, false, null, null, null, null);
 
-                OnPlayerLeft?.Invoke(userId);
-                ActiveUsers.Remove(userId);
+                    OnPlayerLeft?.Invoke(userId);
+                    ActiveUsers.Remove(userId);
                 
-                await BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
+                    await BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
+                        
+                    break;
+                case GameStage.Choosing:
+                    if (ActiveUsers[userId].ClassType != PlayerClassType.None)
+                    {
+                        ActiveUsers[userId].ClassType = PlayerClassType.None;
+                        OnPlayerLeft?.Invoke(userId);
+                    }
+                        
+                    break;
+                case GameStage.Started:
+                    break;
             }
         }
     }

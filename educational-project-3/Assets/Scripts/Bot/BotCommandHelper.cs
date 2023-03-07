@@ -11,6 +11,13 @@ namespace Bot
 {
     public static class BotCommandHelper
     {
+        public const string SmileEmoji = "😄";
+        public const string MeleeEmoji = "🗡";
+        public const string ArcherEmoji = "🏹";
+        public const string MageEmoji = "🧙";
+        public const string FirstTeamEmoji = "⚪";
+        public const string SecondTeamEmoji = "⚫";
+        
         public static readonly Dictionary<string, Action<DiscordMessage>> RequestCommands = new()
         {
             { BotCommandsDescription.CompleteCommand(BotCommandsDescription.CheckHealth), CheckHealth },
@@ -46,7 +53,7 @@ namespace Bot
         
         private static async void StartGameResponse(DiscordMessage message)
         {
-            await AddEmoji(message.ChannelId, message.Id, "😄");
+            await AddEmoji(message.ChannelId, message.Id, SmileEmoji);
         }
 
         private static async void ChooseClass(DiscordMessage message)
@@ -56,9 +63,9 @@ namespace Bot
         
         private static async void ChooseClassResponse(DiscordMessage message)
         {
-            await AddEmoji(message.ChannelId, message.Id, "🗡");
-            await AddEmoji(message.ChannelId, message.Id, "🏹");
-            await AddEmoji(message.ChannelId, message.Id, "🧙");
+            await AddEmoji(message.ChannelId, message.Id, MeleeEmoji);
+            await AddEmoji(message.ChannelId, message.Id, ArcherEmoji);
+            await AddEmoji(message.ChannelId, message.Id, MageEmoji);
         }
         
         private static async void PrepareToGame(DiscordMessage message)
@@ -69,8 +76,8 @@ namespace Bot
         private static async void PrepareToGameResponse(DiscordMessage message)
         {
             Debug.Log(message.Id);
-            await AddEmoji(message.ChannelId, message.Id, "⚪");
-            await AddEmoji(message.ChannelId, message.Id, "⚫");
+            await AddEmoji(message.ChannelId, message.Id, FirstTeamEmoji);
+            await AddEmoji(message.ChannelId, message.Id, SecondTeamEmoji);
         }
 
         private static async void CheckHealth(DiscordMessage message)
@@ -80,7 +87,7 @@ namespace Bot
         
         private static async void CheckHealthResponse(DiscordMessage message)
         {
-            await AddEmoji(message.ChannelId, message.Id, "😄");
+            await AddEmoji(message.ChannelId, message.Id, SmileEmoji);
         }
         
         private static async Task AddEmoji(string channelId, string messageId, string emoji)

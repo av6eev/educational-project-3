@@ -209,8 +209,7 @@ namespace Plugins.DiscordUnity
         {
             Debug.Log("emoji removed");
         }
-
-
+        
         // discord status events
         public void OnPresenceUpdated(DiscordPresence presence)
         {

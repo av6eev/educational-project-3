@@ -62,11 +62,11 @@ namespace Bot
         {
             if (_model.ActiveUsers.Count == 0 && !_model.ActiveUsers.ContainsKey(playerId)) return;
             
-            _playerPresenters[playerId].Deactivate();
-            _playerPresenters.Remove(playerId);
-            
             _manager.FloorModel.Cells[_model.ActiveUsers[playerId].Position].IsActive = false;
             _model.ActiveUsers[playerId].RemovePlayer();
+            
+            _playerPresenters[playerId].Deactivate();
+            _playerPresenters.Remove(playerId);
         }
     }
 }

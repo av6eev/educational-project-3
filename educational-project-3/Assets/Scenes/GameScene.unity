@@ -450,8 +450,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DescriptionsCollection: {fileID: 11400000, guid: c279d3e7cde403b4eb020c5dec3d2372,
     type: 2}
-  PlayerView: {fileID: 6995898693293044392, guid: 1ef4fb208ab16e34fbcb6fe04464f93e,
-    type: 3}
   FloorView: {fileID: 465664475}
 --- !u!1 &1217115486
 GameObject:
@@ -497,7 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01726401ff5881040b95fee1fc9f0a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BotToken: MTA3ODA1MzQ5ODQwNDQ3NDk0Mg.GGXYRM.PodggxjdiseriwcdvCgh5b3-lgTlahoh4ZJWhs
+  BotToken: 
   LogLevel: 0
   View: {fileID: 892999318}
 --- !u!1 &1314852187

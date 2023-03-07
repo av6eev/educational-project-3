@@ -2,8 +2,8 @@ namespace Player
 {
     public enum PlayerClassType
     {
-        Archer,
         Melee,
+        Archer,
         Mage,
         None
     }

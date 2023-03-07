@@ -1,5 +1,6 @@
 ﻿using System;
-using Descriptions.BotCommands;
+using System.Collections.Generic;
+using Descriptions.Player;
 using Descriptions.World;
 
 namespace Descriptions.Base
@@ -8,6 +9,6 @@ namespace Descriptions.Base
     public class DescriptionsCollection
     {
         public WorldDescriptionSo World;
-        public BotCommandsDescriptionSo BotCommands;
+        public List<PlayerDescriptionSo> Players;
     }
 }

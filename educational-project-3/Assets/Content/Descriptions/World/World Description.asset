@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description:
     Id: 1
-    X: 30
-    Z: 30
+    X: 10
+    Z: 10

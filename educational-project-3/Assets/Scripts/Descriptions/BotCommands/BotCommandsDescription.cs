@@ -14,6 +14,7 @@
         public const string ChooseClassResponse = "Выберите класс для своего персонажа!";
         public const string PrepareToGameResponse = "Подготовка к началу игры! Выберите сторону!";
         public const string CheckHealthResponse = "Pong";
+        public const string ChangeTurnResponse = " , твой ход! Выбери действие: ";
 
         public static string CompleteCommand(string command)
         {

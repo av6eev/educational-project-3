@@ -14,7 +14,7 @@ namespace Descriptions.World
         public int Z = 30;
 
         [Header("Game Parameters")] 
-        public int MaxPlayersCount = 1;
+        public int MaxPlayersCount = 2;
         
         [Header("Game UI Parameters")] 
         public string TurnCooldownText = "твой ход! Оставшееся время: ";

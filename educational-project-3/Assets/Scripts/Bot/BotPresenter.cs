@@ -55,17 +55,18 @@ namespace Bot
             }
         }
 
-        private void CreatePlayer(string playerId, FloorModel model, Vector3 position, float angle)
+        private void CreatePlayer(string playerId, FloorModel model, Vector3 basePosition, float angle)
         {
             var playerModel = _model.ActiveUsers[playerId];
-            var presenter = new PlayerPresenter(playerModel, _manager, _manager.GameView.InstantiatePlayer(position, angle));
+            var position = new Vector3(basePosition.x, 0.29f, basePosition.z);
+            var presenter = new PlayerPresenter(playerModel, _manager, _manager.GameView.InstantiatePlayer(playerId, position, angle));
             
             _playerPresenters.Add(playerModel.Id, presenter);
             presenter.Activate();
             
-            playerModel.CreatePlayer(position);
+            playerModel.CreatePlayer(position, new Vector3(0, angle, 0));
             
-            model.Cells[position].IsActive = true;
+            model.Cells[basePosition].IsActive = true;
         }
 
         private void RemovePlayer(string playerId)

@@ -14,5 +14,7 @@ namespace Game
         public BotModel BotModel;
         public PlayerModel PlayerModel;
         public FloorModel FloorModel;
+
+        public FixedSystemEngine FixedSystemEngine;
     }
 }

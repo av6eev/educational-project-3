@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Game;
 using Player;
 using Plugins.DiscordUnity.DiscordUnity.State;
+using Unity.VisualScripting;
 using UnityEngine;
 using DiscordAPI = Plugins.DiscordUnity.DiscordUnity.Rest.DiscordAPI;
 
@@ -47,34 +49,35 @@ namespace Bot
             action?.Invoke(message);
         }
         
+        public void CheckInGameMessages(DiscordMessage message)
+        {
+            if (message.Author.Bot is null or false)
+            {
+                
+            }
+        }
+        
         public async void AddUsers(DiscordMessageReaction reaction)
         {
             _messageReaction = reaction;
 
             if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
 
-            var leftTeam = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.FirstTeamEmoji);
-            var rightTeam = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.SecondTeamEmoji);
-            var leftTeamToArray = leftTeam.Data.ToArray();
-            var rightTeamToArray = rightTeam.Data.ToArray();
+            var firstTeam = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.FirstTeamEmoji);
+            var secondTeam = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.SecondTeamEmoji);
+            var firstTeamDictionary = firstTeam?.Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.FirstTeamEmoji);
+            var secondTeamDictionary = secondTeam?.Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.SecondTeamEmoji);
             var teams = new Dictionary<DiscordUser, string>();
-
-            foreach (var user in leftTeamToArray)
-            {
-                teams.Add(user, BotCommandHelper.FirstTeamEmoji);
-            }
             
-            foreach (var user in rightTeamToArray)
-            {
-                teams.Add(user, BotCommandHelper.SecondTeamEmoji);
-            }
+            teams.AddRange(firstTeamDictionary);
+            teams.AddRange(secondTeamDictionary);
 
-            foreach (var model in from user in teams where CheckUser(user.Key) select new PlayerModel(user.Key.Id, user.Value, user.Key.Username))
+            foreach (var model in from user in teams where CheckNewUser(user.Key) select new PlayerModel(user.Key.Id, user.Value, user.Key.Username))
             {
                 ActiveUsers.Add(model.Id, model);
             }
 
-            await BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
+            await BotCommandHelper.ShowActivePlayers(ActiveUsers);
 
             if (ActiveUsers.Count == _manager.GameDescriptions.World.MaxPlayersCount)
             {
@@ -88,26 +91,12 @@ namespace Bot
             
             var melee = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.MeleeEmoji);
             var archer = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.ArcherEmoji);
-            var mage = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.MageEmoji);
-            var meleeArray = melee?.Data.ToArray();
-            var archerArray = archer?.Data.ToArray();
-            var mageArray = mage?.Data.ToArray();
+            var meleeDictionary = melee?.Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.MeleeEmoji);
+            var archerDictionary = archer?.Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.ArcherEmoji);
             var teams = new Dictionary<DiscordUser, string>();
 
-            foreach (var user in meleeArray!)
-            {
-                teams.Add(user, BotCommandHelper.MeleeEmoji);
-            }
-            
-            foreach (var user in archerArray!)
-            {
-                teams.Add(user, BotCommandHelper.ArcherEmoji);
-            }
-            
-            foreach (var user in mageArray!)
-            {
-                teams.Add(user, BotCommandHelper.MageEmoji);
-            }
+            teams.AddRange(meleeDictionary);            
+            teams.AddRange(archerDictionary);            
             
             foreach (var user in teams)
             {
@@ -149,12 +138,66 @@ namespace Bot
                 OnGameStarting?.Invoke();
             }
         }
-
-        private bool CheckUser(DiscordUser user)
-        {
-            return !user.Id.Equals(BotId) && !ActiveUsers.ContainsKey(user.Id);
-        }
         
+        public async void ChooseAction(DiscordMessageReaction reaction)
+        {
+            if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
+            
+            var moveTopAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.MoveTopEmoji))?
+                .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.MoveTopEmoji);
+            var moveBottomAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.MoveBottomEmoji))?
+                .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.MoveBottomEmoji);
+            var moveLeftAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.MoveLeftEmoji))?
+                .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.MoveLeftEmoji);
+            var moveRightAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.MoveRightEmoji))?
+                .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.MoveRightEmoji);
+            var hitAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.HitActionEmoji))?
+                .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.HitActionEmoji);
+            
+            var actions = new Dictionary<DiscordUser, string>();
+            var activePlayer = _manager.GameModel.ActivePlayer;
+            
+            var direction = Vector3.zero;
+            var rotationAngle = Vector3.zero;
+            
+            actions.AddRange(moveTopAction);
+            actions.AddRange(moveBottomAction);
+            actions.AddRange(moveLeftAction);
+            actions.AddRange(moveRightAction);
+            actions.AddRange(hitAction);
+
+            foreach (var action in actions.Where(action => CheckExistUser(action.Key)))
+            {
+                if (action.Key.Id == activePlayer.Id)
+                {
+                    switch (action.Value)
+                    {
+                        case BotCommandHelper.MoveTopEmoji:
+                            direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 0, 1) : new Vector3(0, 0, -1);
+                            rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 0, 0) : new Vector3(0, 180, 0);
+                            break;
+                        case BotCommandHelper.MoveBottomEmoji:
+                            direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 0, -1) : new Vector3(0, 0, 1);
+                            rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 180, 0) : new Vector3(0, 0, 0);
+                            break;
+                        case BotCommandHelper.MoveLeftEmoji:
+                            direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3( -1, 0, 0) : new Vector3(1, 0, 0);
+                            rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, -90, 0) : new Vector3(0, 90, 0);
+                            break;
+                        case BotCommandHelper.MoveRightEmoji:
+                            direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(1, 0, 0) : new Vector3(-1, 0, 0);
+                            rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 90, 0) : new Vector3(0, -90, 0);
+                            break;
+                        case BotCommandHelper.HitActionEmoji:
+                            break;
+                    }    
+                }
+            }
+
+            activePlayer.SetPosition(direction, rotationAngle);
+            activePlayer.Move(direction);
+        }
+
         private bool CheckUserClass(KeyValuePair<DiscordUser, string> user, DiscordMessageReaction reaction)
         {
             if (user.Key.Id.Equals(BotId) || !ActiveUsers.ContainsKey(user.Key.Id)) return false;
@@ -176,7 +219,7 @@ namespace Bot
                     OnPlayerLeft?.Invoke(userId);
                     ActiveUsers.Remove(userId);
                 
-                    await BotCommandHelper.ShowActivePlayers(_messageReaction, ActiveUsers);
+                    await BotCommandHelper.ShowActivePlayers(ActiveUsers);
                         
                     break;
                 case GameStage.Choosing:
@@ -190,6 +233,16 @@ namespace Bot
                 case GameStage.Started:
                     break;
             }
+        }
+        
+        private bool CheckNewUser(DiscordUser user)
+        {
+            return !user.Id.Equals(BotId) && !ActiveUsers.ContainsKey(user.Id);
+        }
+
+        private bool CheckExistUser(DiscordUser user)
+        {
+            return !user.Id.Equals(BotId) && ActiveUsers.ContainsKey(user.Id);
         }
     }
 }

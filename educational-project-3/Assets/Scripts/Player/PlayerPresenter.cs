@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Game;
 using UnityEngine;
 using Utilities;
@@ -21,6 +22,7 @@ namespace Player
         {
             _model.OnPlayerCreated -= InitPlayer;
             _model.OnPlayerRemoved -= DestroyPlayer;
+            _model.OnPlayerMove -= MovePlayer;
         }
 
         public void Activate()
@@ -29,12 +31,27 @@ namespace Player
             
             _model.OnPlayerCreated += InitPlayer;
             _model.OnPlayerRemoved += DestroyPlayer;
+            _model.OnPlayerMove += MovePlayer;
         }
 
-        private void InitPlayer(Vector3 position)
+        private async void MovePlayer(Vector3 direction)
         {
-            _model.SetPosition(position);
+            _manager.FloorModel.Cells[new Vector3(_model.Position.x, 0, _model.Position.z)].IsActive = false;
             
+            var position = _model.Position + direction;
+            
+            _manager.FloorModel.Cells[new Vector3(position.x, 0, position.z)].IsActive = true;
+
+            await Task.Delay(1000);
+            
+            _view.transform.position += _model.Direction;
+            _model.Direction = Vector3.zero;
+            
+            _manager.GameModel.ChangeTurn();
+        }
+
+        private void InitPlayer()
+        {
             _view.Text.text = _model.Name;
             _view.Enable();
         }

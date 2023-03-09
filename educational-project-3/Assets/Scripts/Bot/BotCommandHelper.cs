@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Descriptions.BotCommands;
 using Player;
+using Plugins.DiscordUnity.DiscordUnity.Rest;
 using Plugins.DiscordUnity.DiscordUnity.State;
 using UnityEngine;
 using DiscordAPI = Plugins.DiscordUnity.DiscordUnity.Rest.DiscordAPI;
@@ -17,6 +18,13 @@ namespace Bot
         public const string MageEmoji = "🧙";
         public const string FirstTeamEmoji = "⚪";
         public const string SecondTeamEmoji = "⚫";
+        public const string MoveTopEmoji = "⬆️";
+        public const string MoveBottomEmoji = "⬇️";
+        public const string MoveLeftEmoji = "⬅️";
+        public const string MoveRightEmoji = "➡️";
+        public const string HitActionEmoji = "👊";
+        
+        public const string ChannelId = "1078053058321317963";
         
         public static readonly Dictionary<string, Action<DiscordMessage>> RequestCommands = new()
         {
@@ -34,22 +42,34 @@ namespace Bot
             { BotCommandsDescription.ChooseClassResponse, ChooseClassResponse },
         };
         
-        public static async Task ShowActivePlayers(DiscordMessageReaction reaction, Dictionary<string, PlayerModel> activeUsers)
+        public static async Task ShowActivePlayers(Dictionary<string, PlayerModel> activeUsers)
         {
-            await DiscordAPI.CreateMessage(reaction.ChannelId, "Составы команд: \n", null, false, null, null, null, null);
+            await DiscordAPI.CreateMessage(ChannelId, "Составы команд: \n", null, false, null, null, null, null);
 
             foreach (var user in activeUsers)
             {
-                await DiscordAPI.CreateMessage(reaction.ChannelId, $"{user.Key} - {user.Value.TeamName} команда", null, false, null, null, null, null);
+                await DiscordAPI.CreateMessage(ChannelId, $"{user.Key} - {user.Value.TeamName} команда", null, false, null, null, null, null);
             }
             
-            await DiscordAPI.CreateMessage(reaction.ChannelId, "---------------\n", null, false, null, null, null, null);
+            await DiscordAPI.CreateMessage(ChannelId, "---------------\n", null, false, null, null, null, null);
         }
         
         public static async Task OnGameStarted(string channelId)
         {
             await DiscordAPI.CreateMessage(channelId, BotCommandsDescription.StartGameResponse, null, false, null, null, null, null);
-            await DiscordAPI.CreateMessage(channelId, "---------------\n", null, false, null, null, null, null);
+        }
+
+        public static async Task<RestResult<DiscordMessage>> OnChangeTurn(string playerName)
+        {
+            var message = await DiscordAPI.CreateMessage(ChannelId, playerName + BotCommandsDescription.ChangeTurnResponse, null, false, null, null, null, null);
+            var array = new List<string>{ MoveTopEmoji, MoveBottomEmoji, MoveLeftEmoji, MoveRightEmoji, HitActionEmoji };
+
+            foreach (var emoji in array)
+            {
+                await AddEmoji(ChannelId, message.Data.Id, emoji);
+            }
+            
+            return message;
         }
         
         private static async void StartGame(DiscordMessage message)
@@ -71,7 +91,7 @@ namespace Bot
         {
             await AddEmoji(message.ChannelId, message.Id, MeleeEmoji);
             await AddEmoji(message.ChannelId, message.Id, ArcherEmoji);
-            await AddEmoji(message.ChannelId, message.Id, MageEmoji);
+            // await AddEmoji(message.ChannelId, message.Id, MageEmoji);
         }
         
         private static async void PrepareToGame(DiscordMessage message)
@@ -99,7 +119,7 @@ namespace Bot
         private static async Task AddEmoji(string channelId, string messageId, string emoji)
         {
             await DiscordAPI.CreateReaction(channelId, messageId, emoji);
-            await Task.Delay(500);
+            // await Task.Delay(300);
         }
     }
 }

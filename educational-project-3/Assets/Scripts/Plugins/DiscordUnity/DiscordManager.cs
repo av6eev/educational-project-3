@@ -4,6 +4,7 @@ using Bot;
 using Floor;
 using Floor.System;
 using Game;
+using Player.System;
 using Plugins.DiscordUnity.DiscordUnity.API;
 using Plugins.DiscordUnity.DiscordUnity.State;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Plugins.DiscordUnity
         private readonly GameManager _manager = new();
         private readonly PresenterEngine _presenterEngine = new();
         private readonly SystemEngine _systemEngine = new();
+        private readonly FixedSystemEngine _fixedSystemEngine = new();
 
         private BotModel _botModel;
     
@@ -52,10 +54,11 @@ namespace Plugins.DiscordUnity
 
         protected virtual async void Start()
         {
-            Debug.Log("Starting...");
+            Debug.Log("Game is starting...");
 
             _manager.GameView = View;
             _manager.GameDescriptions = new GameDescriptions(View.DescriptionsCollection);
+            _manager.FixedSystemEngine = _fixedSystemEngine;
 
             var gameModel = new GameModel();
             _manager.GameModel = gameModel;
@@ -67,7 +70,7 @@ namespace Plugins.DiscordUnity
             _manager.FloorModel = floorModel;
             
             _systemEngine.Add(SystemTypes.GenerateFloorSystem, new GenerateFloorSystem(_manager.FloorModel, _manager, EndGeneration));
-
+                
             _presenterEngine.Add(new BotPresenter(_manager.BotModel, _manager));
             _presenterEngine.Add(new FloorPresenter(_manager.FloorModel, _manager.GameView.FloorView, _manager));
                         
@@ -85,7 +88,12 @@ namespace Plugins.DiscordUnity
             _systemEngine.Update(Time.deltaTime);
             DiscordAPI.Update();
         }
-        
+
+        private void FixedUpdate()
+        {
+            _fixedSystemEngine.Update(Time.deltaTime);
+        }
+
         private void EndGeneration()
         {
             _systemEngine.Remove(SystemTypes.GenerateFloorSystem);
@@ -161,7 +169,15 @@ namespace Plugins.DiscordUnity
         //message events
         public void OnMessageCreated(DiscordMessage message)
         {
-            _botModel.CheckRequestMessage(message);
+            switch (_manager.GameModel.GameStage)
+            {
+                case GameStage.Started:
+                    _botModel.CheckInGameMessages(message);
+                    break;
+                default:
+                    _botModel.CheckRequestMessage(message);
+                    break;
+            }
         }
 
         public void OnMessageUpdated(DiscordMessage message)
@@ -191,6 +207,7 @@ namespace Plugins.DiscordUnity
                     _botModel.ChooseClass(messageReaction);
                     break;
                 case GameStage.Started:
+                    _botModel.ChooseAction(messageReaction);
                     break;
             }
         }

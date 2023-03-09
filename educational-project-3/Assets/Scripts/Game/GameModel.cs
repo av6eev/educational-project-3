@@ -7,9 +7,16 @@ namespace Game
     public class GameModel
     {
         public event Action OnGameStarted;
-        public readonly List<PlayerModel> Players = new();
+        public event Action OnTurnChanged;
+        
+        private readonly List<PlayerModel> _players = new();
 
         public GameStage GameStage;
+        
+        public int Turn = 0;
+        public int TurnTime;
+
+        public PlayerModel ActivePlayer => Turn % 2 == 0 ? _players[0] : _players[1];
 
         public GameModel()
         {
@@ -20,10 +27,15 @@ namespace Game
         {
             foreach (var player in players.Values)
             {
-                Players.Add(player);
+                _players.Add(player);
             }
             
             OnGameStarted?.Invoke();
+        }
+
+        public void ChangeTurn()
+        {
+            OnTurnChanged?.Invoke();
         }
     }
 }

@@ -2,6 +2,7 @@ namespace Utilities
 {
     public enum SystemTypes
     {
-        GenerateFloorSystem
+        GenerateFloorSystem,
+        PlayerMovementSystem
     }
 }

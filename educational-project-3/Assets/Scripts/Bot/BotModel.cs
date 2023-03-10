@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Game;
 using Player;
 using Plugins.DiscordUnity.DiscordUnity.State;
@@ -192,6 +191,13 @@ namespace Bot
                             break;
                     }    
                 }
+            }
+
+            var oldPosition = new Vector3(activePlayer.Position.x, 0, activePlayer.Position.z);
+            
+            if (_manager.FloorModel.Cells.ContainsKey(oldPosition))
+            {
+                _manager.FloorModel.Cells[oldPosition].IsActive = false;
             }
 
             activePlayer.SetPosition(direction, rotationAngle);

@@ -36,15 +36,16 @@ namespace Player
 
         private async void MovePlayer(Vector3 direction)
         {
-            _manager.FloorModel.Cells[new Vector3(_model.Position.x, 0, _model.Position.z)].IsActive = false;
-            
             var position = _model.Position + direction;
-            
-            _manager.FloorModel.Cells[new Vector3(position.x, 0, position.z)].IsActive = true;
+            var newCell = new Vector3(position.x, 0, position.z);
+
+            if (_manager.FloorModel.Cells.ContainsKey(newCell))
+            {
+                _manager.FloorModel.Cells[newCell].IsActive = true;
+            }
 
             await Task.Delay(1000);
             
-            _view.transform.position += _model.Direction;
             _model.Direction = Vector3.zero;
             
             _manager.GameModel.ChangeTurn();

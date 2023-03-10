@@ -40,14 +40,14 @@ namespace Game
         private async void GameStarted()
         {
             _manager.GameView.CameraManager.Enable();
-            await Task.Delay(9000);
+            await Task.Delay(8700);
 
             _model.TurnTime = _manager.GameDescriptions.World.TurnCooldown;
 
-            await BotCommandHelper.OnChangeTurn(_model.ActivePlayer.Name);
-            
             _view.TurnCooldownTxt.text = _model.ActivePlayer.Name + " " + _manager.GameDescriptions.World.TurnCooldownText + _manager.GameDescriptions.World.TurnCooldown;
             _view.Enable();
+            
+            await BotCommandHelper.OnChangeTurn(_model.ActivePlayer.Name);
 
             _manager.FixedSystemEngine.Add(SystemTypes.PlayerMovementSystem, new PlayerMovementSystem(_manager));
             

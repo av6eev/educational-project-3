@@ -23,10 +23,6 @@ namespace Player.System
             
             view.rotation = Quaternion.Slerp(view.rotation, Quaternion.Euler(activePlayer.Angle), .25f);
             view.position += activePlayer.Direction * deltaTime;
-
-            // view.transform.Rotate(angle);
-            // view.rotation = Quaternion.Slerp(view.transform.rotation, Quaternion.Euler(activePlayer.Angle), .25f);
-            // view.Rigidbody.AddForce(_manager.GameModel.ActivePlayer.Position.normalized * 5f, ForceMode.Acceleration);
         }
     }
 }

@@ -113,6 +113,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: wd2
       objectReference: {fileID: 0}
+    - target: {fileID: 4095053947761954419, guid: 7b07eba6116bd414bb644779e340cf33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 66555eb09dd466546bff36a382b5598e, type: 2}
+    - target: {fileID: 4158559061217925071, guid: 7b07eba6116bd414bb644779e340cf33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8bf50488959a0a649a1c3b43b425fbcc, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b07eba6116bd414bb644779e340cf33, type: 3}

@@ -14,6 +14,12 @@ namespace Descriptions.World
         public int Z = 30;
         public int AreaX = 40;
         public int AreaZ = 40;
+        public float NoiseHeight = .9f;
+        public float DetailScale = 3f;
+
+        [Header("Props Parameters")] 
+        public int TreesCount = 20;
+        public int RocksCount = 20;
 
         [Header("Game Parameters")] 
         public int MaxPlayersCount = 2;

@@ -60,14 +60,11 @@ namespace Plugins.DiscordUnity
             _manager.GameDescriptions = new GameDescriptions(View.DescriptionsCollection);
             _manager.FixedSystemEngine = _fixedSystemEngine;
 
-            var gameModel = new GameModel();
-            _manager.GameModel = gameModel;
-            
             _botModel = new BotModel(_manager);
             _manager.BotModel = _botModel;
-
-            var floorModel = new FloorModel();
-            _manager.FloorModel = floorModel;
+            
+            _manager.GameModel = new GameModel();
+            _manager.FloorModel = new FloorModel();
             
             _systemEngine.Add(SystemTypes.GenerateWorldSystem, new GenerateWorldSystem(_manager.FloorModel, _manager, EndGeneration));
                 
@@ -169,15 +166,7 @@ namespace Plugins.DiscordUnity
         //message events
         public void OnMessageCreated(DiscordMessage message)
         {
-            switch (_manager.GameModel.GameStage)
-            {
-                case GameStage.Started:
-                    _botModel.CheckInGameMessages(message);
-                    break;
-                default:
-                    _botModel.CheckRequestMessage(message);
-                    break;
-            }
+            _botModel.CheckRequestMessage(message);
         }
 
         public void OnMessageUpdated(DiscordMessage message)

@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cells;
-using Descriptions.Camera;
 using Descriptions.World;
 using Game;
 using UnityEngine;
 using Utilities;
+using Random = UnityEngine.Random;
 
 namespace Floor.System
 {
@@ -37,19 +39,54 @@ namespace Floor.System
                     var areaCell = new Cell(position)
                     {
                         Type = 1,
-                        IsPlayable = false
+                        IsPlayable = false,
+                        IsEmpty = true,
+                        PropType = PropType.None
                     };
                     
                     SetupPlayableZone(x, cornerX1, cornerX2, z, cornerZ1, cornerZ2, areaCell, position);
                     SetupCameras(x, z, cornerX1, cornerZ1, cornerX2, cornerZ2, worldDescription);
 
-                    _model.Cells.Add(position, areaCell);           
-                }    
-                
-                _endGenerate();
+                    if (!areaCell.IsPlayable)
+                    {
+                        areaCell.Position = new Vector3(x, GenerateNoise(x, z, worldDescription.DetailScale) * worldDescription.NoiseHeight, z);
+                    }
+                    
+                    _model.Cells.Add(areaCell);           
+                }
             }
+
+            SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.Tree, worldDescription.TreesCount);
+            SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.Rock, worldDescription.RocksCount);
+            
+            _endGenerate();
         }
 
+        private void SetupObjectLocation(IList<Cell> cells, PropType type, int propCount)
+        {
+            for (var i = 0; i < propCount; i++)
+            {
+                var randomCell = Random.Range(0, cells.Count);
+                var cell = cells[randomCell];
+
+                switch (type)
+                {
+                    case PropType.Tree:
+                        cell.PropType = PropType.Tree;
+                        break;
+                    case PropType.Rock:
+                        cell.PropType = PropType.Rock;
+                        break;
+                    case PropType.None:
+                        break;
+                    default:
+                        break;
+                }
+            
+                cell.IsEmpty = false;
+            }
+        }
+        
         private void SetupPlayableZone(int x, int cornerX1, int cornerX2, int z, int cornerZ1, int cornerZ2, Cell areaCell, Vector3 position)
         {
             if (x >= cornerX1 && x <= cornerX2 && z >= cornerZ1 && z <= cornerZ2)
@@ -104,6 +141,14 @@ namespace Floor.System
                 startCam.position = new Vector3(x, cameraDescription.BorderVerticalOffset, z - cameraDescription.BorderHorizontalOffset);
                 startCam.rotation = Quaternion.Euler(cameraDescription.VerticalAngle, 0, 0);
             }
+        }
+
+        private float GenerateNoise(int x, int z, float detailScale)
+        {
+            var xNoise = x / detailScale;
+            var zNoise = z / detailScale;
+
+            return Mathf.PerlinNoise(xNoise, zNoise);
         }
     }
 }

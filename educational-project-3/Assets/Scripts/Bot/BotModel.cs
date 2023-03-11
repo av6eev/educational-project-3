@@ -48,14 +48,6 @@ namespace Bot
             action?.Invoke(message);
         }
         
-        public void CheckInGameMessages(DiscordMessage message)
-        {
-            if (message.Author.Bot is null or false)
-            {
-                
-            }
-        }
-        
         public async void AddUsers(DiscordMessageReaction reaction)
         {
             _messageReaction = reaction;
@@ -194,10 +186,10 @@ namespace Bot
             }
 
             var oldPosition = new Vector3(activePlayer.Position.x, 0, activePlayer.Position.z);
-            
-            if (_manager.FloorModel.Cells.ContainsKey(oldPosition))
+
+            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == oldPosition))
             {
-                _manager.FloorModel.Cells[oldPosition].IsActive = false;
+                cell.IsActive = false;
             }
 
             activePlayer.SetPosition(direction, rotationAngle);

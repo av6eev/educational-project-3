@@ -1,4 +1,5 @@
 using Game;
+using UnityEngine;
 using Utilities;
 
 namespace Floor
@@ -25,13 +26,21 @@ namespace Floor
         {
             foreach (var cell in _model.Cells)
             {
-                var view = _view.InitializeCell(cell.Key, cell.Value.Type);
-                // view.Text.text = $"X: {cell.Value.Position.x}, Z: {cell.Value.Position.z}";
-                view.Text.text = $"{cell.Value.IsPlayable}";
-                
-                if (cell.Value.IsBorder)
+                var view = _view.InitializeCell(cell.Position, cell.Type);
+                view.Text.text = $"{cell.IsEmpty}";
+
+                switch (cell.PropType)
                 {
-                    // cellView.MeshRenderer.material.color = Color.red;
+                    case PropType.Tree:
+                        _view.InitializeTree(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z));
+                        break;
+                    case PropType.Rock:
+                        _view.InitializeRock(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z));
+                        break;
+                    case PropType.None:
+                        break;
+                    default:
+                        break;
                 }
             }
         }

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Game;
 using UnityEngine;
@@ -39,10 +40,10 @@ namespace Player
             var position = _model.Position + direction;
             var newCell = new Vector3(position.x, 0, position.z);
 
-            if (_manager.FloorModel.Cells.ContainsKey(newCell))
+            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == newCell))
             {
-                _manager.FloorModel.Cells[newCell].IsActive = true;
-            }
+                cell.IsActive = true;
+            }            
 
             await Task.Delay(1000);
             

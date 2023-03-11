@@ -175,6 +175,7 @@ PlayableDirector:
   m_ExposedReferences:
     m_References:
     - 3b534f0b65a1a504d83ae1ec065a8046: {fileID: 1473804326}
+    - bfcc5f870e846ca44a5f6f1a393d9dbf: {fileID: 1473804326}
     - 0b919468ced12a34a85a45ede218f851: {fileID: 54048364}
     - aeb2a71e0df911545847fc32762bf7d0: {fileID: 1619764928}
     - 07c15b2e29c76f34cbdf16071b4b29fe: {fileID: 982626195}
@@ -191,10 +192,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1619764929}
-  - {fileID: 1473804327}
   - {fileID: 54048363}
+  - {fileID: 1473804327}
   - {fileID: 982626196}
+  - {fileID: 1619764929}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -239,7 +240,7 @@ GameObject:
   - component: {fileID: 54048363}
   - component: {fileID: 54048364}
   m_Layer: 0
-  m_Name: CM vcam1
+  m_Name: CM vcam_start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -484,7 +485,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 1946157055
+    rgba: 2181038079
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -845,7 +846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &445948305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1020,7 +1021,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465664474}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.01}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1510,7 +1511,7 @@ GameObject:
   - component: {fileID: 982626196}
   - component: {fileID: 982626195}
   m_Layer: 0
-  m_Name: CM vcam_between2
+  m_Name: CM vcam_to2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1614,7 +1615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01726401ff5881040b95fee1fc9f0a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BotToken: 
+  BotToken: MTA3ODA1MzQ5ODQwNDQ3NDk0Mg.G67-xg.PJMHcOY43w7mZ6BhcsNT6BKzG7FIQ8CoAMhY_E
   LogLevel: 0
   View: {fileID: 892999318}
 --- !u!1 &1277383255
@@ -2127,7 +2128,7 @@ GameObject:
   - component: {fileID: 1473804327}
   - component: {fileID: 1473804326}
   m_Layer: 0
-  m_Name: CM vcam_to
+  m_Name: CM vcam_to1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2219,6 +2220,10 @@ MonoBehaviour:
   PlayableDirector: {fileID: 53388541}
   MainCamera: {fileID: 330585543}
   CutsceneCamera: {fileID: 445948304}
+  CutsceneCameraStart: {fileID: 54048362}
+  CutsceneCameraTo1: {fileID: 1473804325}
+  CutsceneCameraTo2: {fileID: 982626194}
+  CutsceneCameraTo3: {fileID: 1619764927}
 --- !u!4 &1583378222
 Transform:
   m_ObjectHideFlags: 0
@@ -2245,7 +2250,7 @@ GameObject:
   - component: {fileID: 1619764929}
   - component: {fileID: 1619764928}
   m_Layer: 0
-  m_Name: CM vcam_from
+  m_Name: CM vcam_to3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

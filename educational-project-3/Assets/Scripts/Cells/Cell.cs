@@ -8,6 +8,7 @@ namespace Cells
         public bool IsBorder;
         public int Type;
         public bool IsActive;
+        public bool IsPlayable;
 
         public Cell(Vector3 position)
         {

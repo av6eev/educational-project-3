@@ -66,10 +66,10 @@ namespace Plugins.DiscordUnity
             _botModel = new BotModel(_manager);
             _manager.BotModel = _botModel;
 
-            var floorModel = new FloorModel(_manager.GameDescriptions.World);
+            var floorModel = new FloorModel();
             _manager.FloorModel = floorModel;
             
-            _systemEngine.Add(SystemTypes.GenerateFloorSystem, new GenerateFloorSystem(_manager.FloorModel, _manager, EndGeneration));
+            _systemEngine.Add(SystemTypes.GenerateWorldSystem, new GenerateWorldSystem(_manager.FloorModel, _manager, EndGeneration));
                 
             _presenterEngine.Add(new BotPresenter(_manager.BotModel, _manager));
             _presenterEngine.Add(new FloorPresenter(_manager.FloorModel, _manager.GameView.FloorView, _manager));
@@ -96,7 +96,7 @@ namespace Plugins.DiscordUnity
 
         private void EndGeneration()
         {
-            _systemEngine.Remove(SystemTypes.GenerateFloorSystem);
+            _systemEngine.Remove(SystemTypes.GenerateWorldSystem);
         }
 
         public async void OnServerJoined(DiscordServer server)

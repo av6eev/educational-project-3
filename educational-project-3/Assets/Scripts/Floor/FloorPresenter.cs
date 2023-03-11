@@ -25,8 +25,9 @@ namespace Floor
         {
             foreach (var cell in _model.Cells)
             {
-                var cellView = _view.InitializeCell(cell.Key, cell.Value.Type);
-                cellView.Text.text = $"X: {cell.Value.Position.x}, Z: {cell.Value.Position.z}";
+                var view = _view.InitializeCell(cell.Key, cell.Value.Type);
+                // view.Text.text = $"X: {cell.Value.Position.x}, Z: {cell.Value.Position.z}";
+                view.Text.text = $"{cell.Value.IsPlayable}";
                 
                 if (cell.Value.IsBorder)
                 {

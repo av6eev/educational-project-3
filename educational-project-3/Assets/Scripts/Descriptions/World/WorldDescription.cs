@@ -12,6 +12,8 @@ namespace Descriptions.World
         [Header("Floor Parameters")]
         public int X = 30;
         public int Z = 30;
+        public int AreaX = 40;
+        public int AreaZ = 40;
 
         [Header("Game Parameters")] 
         public int MaxPlayersCount = 2;

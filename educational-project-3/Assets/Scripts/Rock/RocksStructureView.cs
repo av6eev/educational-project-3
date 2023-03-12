@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Rock
 {
-    public class RockView : MonoBehaviour, IFloorObject
+    public class RocksStructureView : MonoBehaviour, IFloorObject
     {
         
     }

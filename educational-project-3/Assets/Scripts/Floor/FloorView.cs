@@ -3,6 +3,7 @@ using Cells;
 using Rock;
 using Tree;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Floor
 {
@@ -12,6 +13,8 @@ namespace Floor
         public List<CellView> CellPrefabs;
         public List<TreeView> TreePrefabs;
         public List<RockView> RockPrefabs;
+        public List<SmallRockView> SmallRockPrefabs;
+        public List<RocksStructureView> RocksStructurePrefabs;
 
         public CellView InitializeCell(Vector3 position, int type)
         {
@@ -21,16 +24,9 @@ namespace Floor
             return cell;
         }
         
-        public void InitializeTree(Vector3 position)
+        public void InitializeFloorObject<T>(Vector3 position, List<T> prefabs) where T : MonoBehaviour, IFloorObject
         {
-            var tree = Instantiate(TreePrefabs[Random.Range(0, TreePrefabs.Count)], position, Quaternion.identity);
-            tree.transform.SetParent(ParentGo);
-        }
-        
-        public void InitializeRock(Vector3 position)
-        {
-            var tree = Instantiate(RockPrefabs[Random.Range(0, RockPrefabs.Count)], position, Quaternion.identity);
-            tree.transform.SetParent(ParentGo);
+            Instantiate(prefabs[Random.Range(0, prefabs.Count)], position, Quaternion.identity).transform.SetParent(ParentGo);
         }
     }
 }

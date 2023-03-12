@@ -4,6 +4,8 @@ namespace Floor
     {
         Tree,
         Rock,
+        SmallRock,
+        RockStructure,
         None,
     }
 }

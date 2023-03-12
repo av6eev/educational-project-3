@@ -739,22 +739,22 @@ Light:
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 1
+  m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
+  m_Color: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
+  m_Intensity: 30000
+  m_Range: 10000
+  m_SpotAngle: 56.741684
+  m_InnerSpotAngle: 56.741684
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.91
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -784,8 +784,8 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 5000
+  m_BounceIntensity: 0
+  m_ColorTemperature: 13178
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -799,14 +799,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 30, y: 105, z: 30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1018,9 +1018,15 @@ MonoBehaviour:
   - {fileID: 4651907462556635405, guid: a86e4781800617e49ac37091e6ef0065, type: 3}
   - {fileID: 8457547888881184833, guid: 086db7717d50be64481325e9db87c3c2, type: 3}
   RockPrefabs:
-  - {fileID: 7215995745746765540, guid: 6880e08f26699c7469b3e7b8b7870f28, type: 3}
-  - {fileID: 7871466319740471552, guid: 6fb5a3e39c5dca541b9efa6b1ffb2f82, type: 3}
-  - {fileID: 424582757234706812, guid: a329a5a831427354da29465b8940dca1, type: 3}
+  - {fileID: 2394831979460885039, guid: 6fb5a3e39c5dca541b9efa6b1ffb2f82, type: 3}
+  - {fileID: 7533541173167261766, guid: a329a5a831427354da29465b8940dca1, type: 3}
+  SmallRockPrefabs:
+  - {fileID: 1479963784105168639, guid: f4ab65091e484394b8b260f9d2032823, type: 3}
+  - {fileID: 7589415201688761019, guid: 11850556aab02e343afc91ef8d874178, type: 3}
+  - {fileID: 6742365712665232757, guid: a122f2bca885d2d48a130b8df1e21105, type: 3}
+  - {fileID: 1719522750833010844, guid: 6880e08f26699c7469b3e7b8b7870f28, type: 3}
+  RocksStructurePrefabs:
+  - {fileID: 9123392299898567829, guid: 214acec0dc23c074c9ca7d274671bbcc, type: 3}
 --- !u!4 &465664476
 Transform:
   m_ObjectHideFlags: 0

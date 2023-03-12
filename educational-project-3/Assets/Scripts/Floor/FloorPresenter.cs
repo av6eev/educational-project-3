@@ -32,10 +32,15 @@ namespace Floor
                 switch (cell.PropType)
                 {
                     case PropType.Tree:
-                        _view.InitializeTree(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z));
+                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z), _view.TreePrefabs);
+                        break;
+                    case PropType.SmallRock:
+                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z), _view.SmallRockPrefabs);
                         break;
                     case PropType.Rock:
-                        _view.InitializeRock(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z));
+                        break;
+                    case PropType.RockStructure:
+                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .35f, cell.Position.z), _view.RocksStructurePrefabs);
                         break;
                     case PropType.None:
                         break;

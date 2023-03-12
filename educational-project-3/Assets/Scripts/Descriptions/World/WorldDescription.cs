@@ -19,7 +19,9 @@ namespace Descriptions.World
 
         [Header("Props Parameters")] 
         public int TreesCount = 20;
-        public int RocksCount = 20;
+        public int RocksCount = 5;
+        public int SmallRocksCount = 10;
+        public int RockStructuresCount = 2;
 
         [Header("Game Parameters")] 
         public int MaxPlayersCount = 2;

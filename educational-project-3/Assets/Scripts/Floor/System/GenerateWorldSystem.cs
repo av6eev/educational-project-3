@@ -57,11 +57,12 @@ namespace Floor.System
             }
 
             SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.Tree, worldDescription.TreesCount);
-            SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.Rock, worldDescription.RocksCount);
+            SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.SmallRock, worldDescription.SmallRocksCount);
+            SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.RockStructure, worldDescription.RockStructuresCount);
             
             _endGenerate();
         }
-
+        
         private void SetupObjectLocation(IList<Cell> cells, PropType type, int propCount)
         {
             for (var i = 0; i < propCount; i++)
@@ -69,20 +70,7 @@ namespace Floor.System
                 var randomCell = Random.Range(0, cells.Count);
                 var cell = cells[randomCell];
 
-                switch (type)
-                {
-                    case PropType.Tree:
-                        cell.PropType = PropType.Tree;
-                        break;
-                    case PropType.Rock:
-                        cell.PropType = PropType.Rock;
-                        break;
-                    case PropType.None:
-                        break;
-                    default:
-                        break;
-                }
-            
+                cell.PropType = type;
                 cell.IsEmpty = false;
             }
         }

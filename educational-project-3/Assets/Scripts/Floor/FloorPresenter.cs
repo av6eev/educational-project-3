@@ -1,4 +1,5 @@
 using Game;
+using UnityEngine;
 using Utilities;
 
 namespace Floor
@@ -25,12 +26,29 @@ namespace Floor
         {
             foreach (var cell in _model.Cells)
             {
-                var cellView = _view.InitializeCell(cell.Key, cell.Value.Type);
-                cellView.Text.text = $"X: {cell.Value.Position.x}, Z: {cell.Value.Position.z}";
-                
-                if (cell.Value.IsBorder)
+                var view = _view.InitializeCell(cell.Position, cell.Type);
+                view.Text.text = $"{cell.IsEmpty}";
+
+                switch (cell.PropType)
                 {
-                    // cellView.MeshRenderer.material.color = Color.red;
+                    case PropType.Tree:
+                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z), _view.TreePrefabs);
+                        break;
+                    case PropType.SmallRock:
+                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z), _view.SmallRockPrefabs);
+                        break;
+                    case PropType.Rock:
+                        break;
+                    case PropType.RockStructure:
+                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .35f, cell.Position.z), _view.RocksStructurePrefabs);
+                        break;
+                    case PropType.Lantern:
+                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .4f, cell.Position.z), _view.LanternView);
+                        break;
+                    case PropType.None:
+                        break;
+                    default:
+                        break;
                 }
             }
         }

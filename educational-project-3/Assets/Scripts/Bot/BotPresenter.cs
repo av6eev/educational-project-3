@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Floor;
 using Game;
 using Player;
@@ -44,14 +45,10 @@ namespace Bot
         private void PlayerEntered(string playerId)
         {
             var floorModel = _manager.FloorModel;
-            
-            if (!floorModel.Cells[floorModel.FirstStartPosition].IsActive)
+
+            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == floorModel.FirstStartPosition))
             {
-                CreatePlayer(playerId, floorModel, floorModel.FirstStartPosition, 45);
-            }
-            else
-            {
-                CreatePlayer(playerId, floorModel, floorModel.SecondStartPosition, -135);
+                CreatePlayer(playerId, floorModel, !cell.IsActive ? floorModel.FirstStartPosition : floorModel.SecondStartPosition, 45);
             }
         }
 
@@ -66,14 +63,21 @@ namespace Bot
             
             playerModel.CreatePlayer(position, new Vector3(0, angle, 0));
             
-            model.Cells[basePosition].IsActive = true;
+            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == basePosition))
+            {
+                cell.IsActive = true;
+            }
         }
 
         private void RemovePlayer(string playerId)
         {
             if (_model.ActiveUsers.Count == 0 && !_model.ActiveUsers.ContainsKey(playerId)) return;
             
-            _manager.FloorModel.Cells[_model.ActiveUsers[playerId].Position].IsActive = false;
+            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == _model.ActiveUsers[playerId].Position))
+            {
+                cell.IsActive = false;
+            }
+
             _model.ActiveUsers[playerId].RemovePlayer();
             
             _playerPresenters[playerId].Deactivate();

@@ -14,9 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description:
     Id: 1
-    X: 10
-    Z: 10
-    MaxPlayersCount: 2
+    X: 20
+    Z: 20
+    AreaX: 60
+    AreaZ: 60
+    NoiseHeight: 0.6
+    DetailScale: 3
+    TreesCount: 15
+    RocksCount: 5
+    SmallRocksCount: 50
+    RockStructuresCount: 30
+    LanternsCount: 10
+    MaxPlayersCount: 1
     TurnCooldownText: "\u0442\u0432\u043E\u0439 \u0445\u043E\u0434! \u041E\u0441\u0442\u0430\u0432\u0448\u0435\u0435\u0441\u044F
       \u0432\u0440\u0435\u043C\u044F: "
-    TurnCooldown: 30
+    TurnCooldown: 180

@@ -16,14 +16,13 @@ namespace Player.System
         public void Update(float deltaTime)
         {
             var activePlayer = _manager.GameModel.ActivePlayer;
-            var view = _manager.GameView.Players[activePlayer.Id].transform;
-
+            
             if (activePlayer.Direction == Vector3.zero) return;
-            // view.transform.Rotate(angle);
-            view.rotation = Quaternion.Slerp(view.rotation, Quaternion.Euler(activePlayer.Angle), .25f);
 
-            // view.rotation = Quaternion.Slerp(view.transform.rotation, Quaternion.Euler(activePlayer.Angle), .25f);
-            // view.Rigidbody.AddForce(_manager.GameModel.ActivePlayer.Position.normalized * 5f, ForceMode.Acceleration);
+            var view = _manager.GameView.Players[activePlayer.Id].transform;
+            
+            view.rotation = Quaternion.Slerp(view.rotation, Quaternion.Euler(activePlayer.Angle), .25f);
+            view.position += activePlayer.Direction * deltaTime;
         }
     }
 }

@@ -60,16 +60,13 @@ namespace Plugins.DiscordUnity
             _manager.GameDescriptions = new GameDescriptions(View.DescriptionsCollection);
             _manager.FixedSystemEngine = _fixedSystemEngine;
 
-            var gameModel = new GameModel();
-            _manager.GameModel = gameModel;
-            
             _botModel = new BotModel(_manager);
             _manager.BotModel = _botModel;
-
-            var floorModel = new FloorModel(_manager.GameDescriptions.World);
-            _manager.FloorModel = floorModel;
             
-            _systemEngine.Add(SystemTypes.GenerateFloorSystem, new GenerateFloorSystem(_manager.FloorModel, _manager, EndGeneration));
+            _manager.GameModel = new GameModel();
+            _manager.FloorModel = new FloorModel();
+            
+            _systemEngine.Add(SystemTypes.GenerateWorldSystem, new GenerateWorldSystem(_manager.FloorModel, _manager, EndGeneration));
                 
             _presenterEngine.Add(new BotPresenter(_manager.BotModel, _manager));
             _presenterEngine.Add(new FloorPresenter(_manager.FloorModel, _manager.GameView.FloorView, _manager));
@@ -96,7 +93,7 @@ namespace Plugins.DiscordUnity
 
         private void EndGeneration()
         {
-            _systemEngine.Remove(SystemTypes.GenerateFloorSystem);
+            _systemEngine.Remove(SystemTypes.GenerateWorldSystem);
         }
 
         public async void OnServerJoined(DiscordServer server)
@@ -169,15 +166,7 @@ namespace Plugins.DiscordUnity
         //message events
         public void OnMessageCreated(DiscordMessage message)
         {
-            switch (_manager.GameModel.GameStage)
-            {
-                case GameStage.Started:
-                    _botModel.CheckInGameMessages(message);
-                    break;
-                default:
-                    _botModel.CheckRequestMessage(message);
-                    break;
-            }
+            _botModel.CheckRequestMessage(message);
         }
 
         public void OnMessageUpdated(DiscordMessage message)

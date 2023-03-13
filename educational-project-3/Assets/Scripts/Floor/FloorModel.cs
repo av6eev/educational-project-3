@@ -7,14 +7,8 @@ namespace Floor
 {
     public class FloorModel
     {
-        public readonly Dictionary<Vector3, Cell> Cells = new();
-        public readonly Vector3 FirstStartPosition;
-        public readonly Vector3 SecondStartPosition;
-
-        public FloorModel(WorldDescription description)
-        {
-            FirstStartPosition = new Vector3(description.X - description.X + 1, 0, description.Z - description.Z + 1);
-            SecondStartPosition = new Vector3(description.X - 2, 0, description.Z - 2);
-        }
+        public readonly List<Cell> Cells = new();
+        public Vector3 FirstStartPosition;
+        public Vector3 SecondStartPosition;
     }
 }

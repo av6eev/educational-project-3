@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collection:
     World: {fileID: 11400000, guid: 76ddcd0562cfd844192f034e42d87889, type: 2}
+    Camera: {fileID: 11400000, guid: 692322c3b5283364f99f02adac390cf1, type: 2}
     Players:
     - {fileID: 11400000, guid: 8704ef44942356040b024b813a4da51a, type: 2}
     - {fileID: 11400000, guid: ea8e79458f9b6b6419a3a37f4f9db144, type: 2}

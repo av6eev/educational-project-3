@@ -22,6 +22,7 @@ namespace Descriptions.World
         public int RocksCount = 5;
         public int SmallRocksCount = 10;
         public int RockStructuresCount = 2;
+        public int LanternsCount = 3;
 
         [Header("Game Parameters")] 
         public int MaxPlayersCount = 2;

@@ -22,8 +22,9 @@ MonoBehaviour:
     DetailScale: 3
     TreesCount: 15
     RocksCount: 5
-    SmallRocksCount: 20
-    RockStructuresCount: 10
+    SmallRocksCount: 50
+    RockStructuresCount: 30
+    LanternsCount: 10
     MaxPlayersCount: 1
     TurnCooldownText: "\u0442\u0432\u043E\u0439 \u0445\u043E\u0434! \u041E\u0441\u0442\u0430\u0432\u0448\u0435\u0435\u0441\u044F
       \u0432\u0440\u0435\u043C\u044F: "

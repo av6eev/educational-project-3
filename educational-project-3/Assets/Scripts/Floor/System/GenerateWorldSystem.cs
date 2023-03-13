@@ -59,6 +59,7 @@ namespace Floor.System
             SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.Tree, worldDescription.TreesCount);
             SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.SmallRock, worldDescription.SmallRocksCount);
             SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.RockStructure, worldDescription.RockStructuresCount);
+            SetupObjectLocation(_model.Cells.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.Lantern, worldDescription.LanternsCount);
             
             _endGenerate();
         }

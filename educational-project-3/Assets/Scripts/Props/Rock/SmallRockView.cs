@@ -1,7 +1,7 @@
 using Floor;
 using UnityEngine;
 
-namespace Rock
+namespace Props.Rock
 {
     public class SmallRockView : MonoBehaviour, IFloorObject
     {

@@ -6,6 +6,7 @@ namespace Floor
         Rock,
         SmallRock,
         RockStructure,
+        Lantern,
         None,
     }
 }

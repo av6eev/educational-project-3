@@ -1,7 +1,7 @@
 using Floor;
 using UnityEngine;
 
-namespace Tree
+namespace Props.Tree
 {
     public class TreeView : MonoBehaviour, IFloorObject
     {

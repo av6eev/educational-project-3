@@ -15,9 +15,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_FogColor: {r: 0.2901961, g: 0.50980395, b: 0.49803922, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.013
+  m_FogDensity: 0.02
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -1027,6 +1027,8 @@ MonoBehaviour:
   - {fileID: 1719522750833010844, guid: 6880e08f26699c7469b3e7b8b7870f28, type: 3}
   RocksStructurePrefabs:
   - {fileID: 9123392299898567829, guid: 214acec0dc23c074c9ca7d274671bbcc, type: 3}
+  LanternView:
+  - {fileID: 1693128122464240286, guid: 34939de9df8f901488265743cac51868, type: 3}
 --- !u!4 &465664476
 Transform:
   m_ObjectHideFlags: 0

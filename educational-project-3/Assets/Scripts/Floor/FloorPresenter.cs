@@ -42,6 +42,9 @@ namespace Floor
                     case PropType.RockStructure:
                         _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .35f, cell.Position.z), _view.RocksStructurePrefabs);
                         break;
+                    case PropType.Lantern:
+                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .4f, cell.Position.z), _view.LanternView);
+                        break;
                     case PropType.None:
                         break;
                     default:

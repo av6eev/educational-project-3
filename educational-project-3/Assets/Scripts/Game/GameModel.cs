@@ -10,6 +10,7 @@ namespace Game
         public event Action OnTurnChanged;
         
         private readonly List<PlayerModel> _players = new();
+        public string ChannelId { get; private set; } 
 
         public GameStage GameStage;
         
@@ -23,8 +24,10 @@ namespace Game
             GameStage = GameStage.Preparing;
         }
 
-        public void StartGame(Dictionary<string, PlayerModel> players)
+        public void StartGame(Dictionary<string, PlayerModel> players, string channelId)
         {
+            ChannelId = channelId;
+            
             foreach (var player in players.Values)
             {
                 _players.Add(player);

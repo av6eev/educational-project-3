@@ -203,7 +203,7 @@ namespace Plugins.DiscordUnity
 
         public void OnMessageReactionRemoved(DiscordMessageReaction messageReaction)
         {
-            _botModel.RemoveUser(messageReaction.UserId, messageReaction.Emoji.Name);
+            _botModel.PlayerDeselectTeam(messageReaction.UserId, messageReaction.Emoji.Name);
         }
 
         public void OnMessageAllReactionsRemoved(DiscordMessageReaction messageReaction)

@@ -23,23 +23,23 @@ namespace Bot
         public void Deactivate()
         {
             _model.OnPlayerEntered -= PlayerEntered;
-            _model.OnPlayerLeft -= RemovePlayer;
+            _model.OnPlayerDeselectTeam -= RemoveActivePlayer;
             _model.OnGameStarting -= StartGame;
         }
 
         public void Activate()
         {
             _model.OnPlayerEntered += PlayerEntered;
-            _model.OnPlayerLeft += RemovePlayer;
+            _model.OnPlayerDeselectTeam += RemoveActivePlayer;
             _model.OnGameStarting += StartGame;
         }
 
-        private void StartGame()
+        private void StartGame(string channelId)
         {
             var presenter = new GamePresenter(_manager.GameModel, _manager.GameView, _manager);
             presenter.Activate();
             
-            _manager.GameModel.StartGame(_model.ActiveUsers);
+            _manager.GameModel.StartGame(_model.ActiveUsers, channelId);
         }
 
         private void PlayerEntered(string playerId)
@@ -48,18 +48,18 @@ namespace Bot
 
             foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == floorModel.FirstStartPosition))
             {
-                CreatePlayer(playerId, floorModel, !cell.IsActive ? floorModel.FirstStartPosition : floorModel.SecondStartPosition, 45);
+                CreatePlayer(playerId, !cell.IsActive ? floorModel.FirstStartPosition : floorModel.SecondStartPosition, !cell.IsActive ? 45 : -135);
             }
         }
 
-        private void CreatePlayer(string playerId, FloorModel model, Vector3 basePosition, float angle)
+        private void CreatePlayer(string playerId, Vector3 basePosition, float angle)
         {
             var playerModel = _model.ActiveUsers[playerId];
             var position = new Vector3(basePosition.x, 0.29f, basePosition.z);
             var presenter = new PlayerPresenter(playerModel, _manager, _manager.GameView.InstantiatePlayer(playerId, position, angle));
             
-            _playerPresenters.Add(playerModel.Id, presenter);
             presenter.Activate();
+            _playerPresenters.Add(playerId, presenter);
             
             playerModel.CreatePlayer(position, new Vector3(0, angle, 0));
             
@@ -69,7 +69,7 @@ namespace Bot
             }
         }
 
-        private void RemovePlayer(string playerId)
+        private void RemoveActivePlayer(string playerId)
         {
             if (_model.ActiveUsers.Count == 0 && !_model.ActiveUsers.ContainsKey(playerId)) return;
             
@@ -79,9 +79,6 @@ namespace Bot
             }
 
             _model.ActiveUsers[playerId].RemovePlayer();
-            
-            _playerPresenters[playerId].Deactivate();
-            _playerPresenters.Remove(playerId);
         }
     }
 }

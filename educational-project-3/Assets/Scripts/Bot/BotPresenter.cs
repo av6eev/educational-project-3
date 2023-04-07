@@ -46,7 +46,7 @@ namespace Bot
         {
             var floorModel = _manager.FloorModel;
 
-            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == floorModel.FirstStartPosition))
+            foreach (var cell in _manager.FloorModel.Cells.Values.Where(cell => cell.Position == floorModel.FirstStartPosition))
             {
                 CreatePlayer(playerId, !cell.IsActive ? floorModel.FirstStartPosition : floorModel.SecondStartPosition, !cell.IsActive ? 45 : -135);
             }
@@ -63,7 +63,7 @@ namespace Bot
             
             playerModel.CreatePlayer(position, new Vector3(0, angle, 0));
             
-            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == basePosition))
+            foreach (var cell in _manager.FloorModel.Cells.Values.Where(cell => cell.Position == basePosition))
             {
                 cell.IsActive = true;
             }
@@ -73,7 +73,7 @@ namespace Bot
         {
             if (_model.ActiveUsers.Count == 0 && !_model.ActiveUsers.ContainsKey(playerId)) return;
             
-            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == _model.ActiveUsers[playerId].Position))
+            foreach (var cell in _manager.FloorModel.Cells.Values.Where(cell => cell.Position == _model.ActiveUsers[playerId].Position))
             {
                 cell.IsActive = false;
             }

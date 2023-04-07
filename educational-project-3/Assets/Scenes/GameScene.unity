@@ -1013,6 +1013,7 @@ MonoBehaviour:
   CellPrefabs:
   - {fileID: 724660936616387037, guid: cdb55fcec6b5e024aa036badf7951bbc, type: 3}
   - {fileID: 5578890986118526810, guid: be715d7fc11d2654fb203bd0434c7b26, type: 3}
+  - {fileID: 8031170665299576579, guid: c64871f8eead1b14091b84b5528649de, type: 3}
   TreePrefabs:
   - {fileID: 6667689234810750295, guid: f8f133b6ff0ec324aa9460322d3525d7, type: 3}
   - {fileID: 4651907462556635405, guid: a86e4781800617e49ac37091e6ef0065, type: 3}

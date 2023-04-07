@@ -21,7 +21,7 @@ namespace Floor
 
         public CellView InitializeCell(Vector3 position, int type)
         {
-            var cell = Instantiate(type == 0 ? CellPrefabs[0] : CellPrefabs[1], position, Quaternion.identity);
+            var cell = Instantiate(CellPrefabs[type], position, Quaternion.identity);
             cell.transform.SetParent(ParentGo);
 
             return cell;
@@ -29,14 +29,7 @@ namespace Floor
         
         public void InitializeFloorObject<T>(Vector3 position, List<T> prefabs) where T : MonoBehaviour, IFloorObject
         {
-            if (prefabs.Count == 1)
-            {
-                Instantiate(prefabs[0], position, Quaternion.Euler(0, Random.Range(0, 360), 0)).transform.SetParent(ParentGo);
-            }
-            else
-            {
-                Instantiate(prefabs[Random.Range(0, prefabs.Count)], position, Quaternion.identity).transform.SetParent(ParentGo);
-            }
+            Instantiate(prefabs.Count == 1 ? prefabs[0] : prefabs[Random.Range(0, prefabs.Count)], position, Quaternion.Euler(0, Random.Range(0, 360), 0)).transform.SetParent(ParentGo);
         }
     }
 }

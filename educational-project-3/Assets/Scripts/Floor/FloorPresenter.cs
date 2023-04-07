@@ -24,26 +24,31 @@ namespace Floor
 
         public void Activate()
         {
-            foreach (var cell in _model.Cells)
+            foreach (var cell in _model.Cells.Values)
             {
-                var view = _view.InitializeCell(cell.Position, cell.Type);
-                view.Text.text = $"{cell.IsEmpty}";
-
+                var position = cell.Position;
+                var view = _view.InitializeCell(new Vector3(position.x, cell.YOffset, position.z), cell.Type);
+                view.Text.text = $"{cell.GroupSize}";
+                
                 switch (cell.PropType)
                 {
                     case PropType.Tree:
-                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z), _view.TreePrefabs);
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z), _view.TreePrefabs);
                         break;
                     case PropType.SmallRock:
-                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .3f, cell.Position.z), _view.SmallRockPrefabs);
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z), _view.SmallRockPrefabs);
                         break;
                     case PropType.Rock:
+                        if (cell.IsGroupCenter)
+                        {
+                            _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z), _view.RockPrefabs);
+                        }
                         break;
                     case PropType.RockStructure:
-                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .35f, cell.Position.z), _view.RocksStructurePrefabs);
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .35f, position.z), _view.RocksStructurePrefabs);
                         break;
                     case PropType.Lantern:
-                        _view.InitializeFloorObject(new Vector3(cell.Position.x, cell.Position.y + .4f, cell.Position.z), _view.LanternView);
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .4f, position.z), _view.LanternView);
                         break;
                     case PropType.None:
                         break;

@@ -191,7 +191,7 @@ namespace Bot
 
             var oldPosition = new Vector3(activePlayer.Position.x, 0, activePlayer.Position.z);
 
-            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == oldPosition))
+            foreach (var cell in _manager.FloorModel.Cells.Values.Where(cell => cell.Position == oldPosition))
             {
                 cell.IsActive = false;
             }

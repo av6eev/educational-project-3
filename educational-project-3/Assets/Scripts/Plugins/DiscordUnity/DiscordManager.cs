@@ -1,30 +1,18 @@
 ﻿using System;
-using System.Linq;
 using Bot;
-using Floor;
-using Floor.System;
 using Game;
-using Player.System;
 using Plugins.DiscordUnity.DiscordUnity.API;
 using Plugins.DiscordUnity.DiscordUnity.State;
 using UnityEngine;
-using Utilities;
 using DiscordAPI = Plugins.DiscordUnity.DiscordUnity.DiscordAPI;
 
 namespace Plugins.DiscordUnity
 {
     public class DiscordManager : MonoBehaviour, IDiscordServerEvents, IDiscordMessageEvents, IDiscordStatusEvents
     {
-        [SerializeField] private string BotToken;
+        [NonSerialized] public string BotToken;
         public DiscordLogLevel LogLevel = DiscordLogLevel.None;
-        public GameView View;
-        
-        private readonly GameManager _manager = new();
-        private readonly PresenterEngine _presenterEngine = new();
-        private readonly SystemEngine _systemEngine = new();
-        private readonly FixedSystemEngine _fixedSystemEngine = new();
-
-        private BotModel _botModel;
+        public GameManager Manager;
     
         #region Singleton
         public static DiscordManager Singleton { get; private set; }
@@ -56,49 +44,26 @@ namespace Plugins.DiscordUnity
         {
             Debug.Log("Game is starting...");
 
-            _manager.GameView = View;
-            _manager.GameDescriptions = new GameDescriptions(View.DescriptionsCollection);
-            _manager.FixedSystemEngine = _fixedSystemEngine;
-
-            _botModel = new BotModel(_manager);
-            _manager.BotModel = _botModel;
-            
-            _manager.GameModel = new GameModel();
-            _manager.FloorModel = new FloorModel();
-            
-            _systemEngine.Add(SystemTypes.GenerateWorldSystem, new GenerateWorldSystem(_manager.FloorModel, _manager, EndGeneration));
-                
-            _presenterEngine.Add(new BotPresenter(_manager.BotModel, _manager));
-            _presenterEngine.Add(new FloorPresenter(_manager.FloorModel, _manager.GameView.FloorView, _manager));
-                        
             DiscordAPI.Logger = new DiscordLogger(LogLevel);
             DiscordAPI.RegisterEventsHandler(this);
             await DiscordAPI.StartWithBot(BotToken);
             
-            _presenterEngine.Activate();
-
             Debug.Log("Started!");
         }
 
         private void Update()
         {
-            _systemEngine.Update(Time.deltaTime);
             DiscordAPI.Update();
+            Manager.SystemEngine.Update(Time.deltaTime);
         }
 
         private void FixedUpdate()
         {
-            _fixedSystemEngine.Update(Time.deltaTime);
-        }
-
-        private void EndGeneration()
-        {
-            _systemEngine.Remove(SystemTypes.GenerateWorldSystem);
+            Manager.FixedSystemEngine.Update(Time.deltaTime);
         }
 
         public async void OnServerJoined(DiscordServer server)
         {
-            // server.Channels.Values.FirstOrDefault(x => x.Type == DiscordUnity.Models.ChannelType.GUILD_TEXT)?.CreateMessage("Hello World!", null, null, null, null, null, null);
             Debug.Log("hello world");
             await DiscordUnity.Rest.DiscordAPI.CreateMessage("1078053058321317963", "Hello World", null, false, null, null, null, null);
         }
@@ -166,7 +131,7 @@ namespace Plugins.DiscordUnity
         //message events
         public void OnMessageCreated(DiscordMessage message)
         {
-            _botModel.CheckRequestMessage(message);
+            Manager.BotModel.CheckRequestMessage(message);
         }
 
         public void OnMessageUpdated(DiscordMessage message)
@@ -187,23 +152,23 @@ namespace Plugins.DiscordUnity
 
         public void OnMessageReactionAdded(DiscordMessageReaction messageReaction)
         {
-            switch (_manager.GameModel.GameStage)
+            switch (Manager.GameModel.GameStage)
             {
                 case GameStage.Preparing:
-                    _botModel.AddUsers(messageReaction);
+                    Manager.BotModel.AddUsers(messageReaction);
                     break;
                 case GameStage.Choosing:
-                    _botModel.ChooseClass(messageReaction);
+                    Manager.BotModel.ChooseClass(messageReaction);
                     break;
                 case GameStage.Started:
-                    _botModel.ChooseAction(messageReaction);
+                    Manager.BotModel.ChooseAction(messageReaction);
                     break;
             }
         }
 
         public void OnMessageReactionRemoved(DiscordMessageReaction messageReaction)
         {
-            _botModel.RemoveUser(messageReaction.UserId, messageReaction.Emoji.Name);
+            Manager.BotModel.PlayerDeselectTeam(messageReaction.UserId, messageReaction.Emoji.Name);
         }
 
         public void OnMessageAllReactionsRemoved(DiscordMessageReaction messageReaction)

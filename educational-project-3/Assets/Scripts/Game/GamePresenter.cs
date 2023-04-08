@@ -47,7 +47,7 @@ namespace Game
             _view.TurnCooldownTxt.text = _model.ActivePlayer.Name + " " + _manager.GameDescriptions.World.TurnCooldownText + _manager.GameDescriptions.World.TurnCooldown;
             _view.Enable();
             
-            await BotCommandHelper.OnChangeTurn(_model.ActivePlayer.Name);
+            await BotCommandHelper.OnChangeTurn(_model.ActivePlayer.Name, _model.ChannelId);
 
             _manager.FixedSystemEngine.Add(SystemTypes.PlayerMovementSystem, new PlayerMovementSystem(_manager));
             
@@ -63,7 +63,7 @@ namespace Game
             _model.Turn++;
             _view.TurnCooldownTxt.text = _model.ActivePlayer.Name + " " + _manager.GameDescriptions.World.TurnCooldownText + _manager.GameDescriptions.World.TurnCooldown;
             
-            await BotCommandHelper.OnChangeTurn(_model.ActivePlayer.Name);
+            await BotCommandHelper.OnChangeTurn(_model.ActivePlayer.Name, _model.ChannelId);
             
             _coroutine = GameCoroutines.RunCoroutine(TurnFunction());
         }

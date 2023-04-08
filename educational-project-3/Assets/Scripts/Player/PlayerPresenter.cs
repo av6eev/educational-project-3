@@ -40,7 +40,7 @@ namespace Player
             var position = _model.Position + direction;
             var newCell = new Vector3(position.x, 0, position.z);
 
-            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == newCell))
+            foreach (var cell in _manager.FloorModel.Cells.Values.Where(cell => cell.Position == newCell))
             {
                 cell.IsActive = true;
             }            

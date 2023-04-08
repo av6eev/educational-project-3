@@ -20,8 +20,9 @@ MonoBehaviour:
     AreaZ: 60
     NoiseHeight: 0.6
     DetailScale: 3
+    ChanceToIncreaseCellOnce: 0.537
+    ChanceToIncreaseCellTwice: 0.203
     TreesCount: 15
-    RocksCount: 5
     SmallRocksCount: 50
     RockStructuresCount: 30
     LanternsCount: 10

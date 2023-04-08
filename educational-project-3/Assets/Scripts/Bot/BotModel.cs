@@ -14,8 +14,8 @@ namespace Bot
     public class BotModel
     {
         public Action<string> OnPlayerEntered;
-        public Action<string> OnPlayerLeft;
-        public Action OnGameStarting;
+        public Action<string> OnPlayerDeselectTeam;
+        public Action<string> OnGameStarting;
         
         private const string BotId = "1078053498404474942";
         private DiscordMessageReaction _messageReaction;
@@ -68,7 +68,7 @@ namespace Bot
                 ActiveUsers.Add(model.Id, model);
             }
 
-            await BotCommandHelper.ShowActivePlayers(ActiveUsers);
+            await BotCommandHelper.ShowActivePlayers(ActiveUsers, reaction.ChannelId);
 
             if (ActiveUsers.Count == _manager.GameDescriptions.World.MaxPlayersCount)
             {
@@ -78,6 +78,8 @@ namespace Bot
 
         public async void ChooseClass(DiscordMessageReaction reaction)
         {
+            _messageReaction = reaction;
+            
             if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
             
             var melee = await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.MeleeEmoji);
@@ -126,23 +128,25 @@ namespace Bot
                 
                 await BotCommandHelper.OnGameStarted(_messageReaction.ChannelId);
                 
-                OnGameStarting?.Invoke();
+                OnGameStarting?.Invoke(_messageReaction.ChannelId);
             }
         }
         
         public async void ChooseAction(DiscordMessageReaction reaction)
         {
+            _messageReaction = reaction;
+
             if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
             
-            var moveTopAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.MoveTopEmoji))?
+            var moveTopAction = (await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.MoveTopEmoji))?
                 .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.MoveTopEmoji);
-            var moveBottomAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.MoveBottomEmoji))?
+            var moveBottomAction = (await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.MoveBottomEmoji))?
                 .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.MoveBottomEmoji);
-            var moveLeftAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.MoveLeftEmoji))?
+            var moveLeftAction = (await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.MoveLeftEmoji))?
                 .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.MoveLeftEmoji);
-            var moveRightAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.MoveRightEmoji))?
+            var moveRightAction = (await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.MoveRightEmoji))?
                 .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.MoveRightEmoji);
-            var hitAction = (await DiscordAPI.GetReactions(BotCommandHelper.ChannelId, reaction.MessageId, BotCommandHelper.HitActionEmoji))?
+            var hitAction = (await DiscordAPI.GetReactions(reaction.ChannelId, reaction.MessageId, BotCommandHelper.HitActionEmoji))?
                 .Data.ToArray().ToDictionary(user => user, user => BotCommandHelper.HitActionEmoji);
             
             var actions = new Dictionary<DiscordUser, string>();
@@ -187,7 +191,7 @@ namespace Bot
 
             var oldPosition = new Vector3(activePlayer.Position.x, 0, activePlayer.Position.z);
 
-            foreach (var cell in _manager.FloorModel.Cells.Where(cell => cell.Position == oldPosition))
+            foreach (var cell in _manager.FloorModel.Cells.Values.Where(cell => cell.Position == oldPosition))
             {
                 cell.IsActive = false;
             }
@@ -203,7 +207,7 @@ namespace Bot
             return reaction.Emoji.Name == user.Value && ActiveUsers[user.Key.Id].ClassType == PlayerClassType.None;
         }
 
-        public async void RemoveUser(string userId, string emojiName)
+        public async void PlayerDeselectTeam(string userId, string emojiName)
         {
             if (!ActiveUsers.ContainsKey(userId)) return;
             
@@ -214,19 +218,17 @@ namespace Bot
                 
                     await DiscordAPI.CreateMessage(_messageReaction.ChannelId, $"{userId} удален из {ActiveUsers[userId].TeamName} команды", null, false, null, null, null, null);
 
-                    OnPlayerLeft?.Invoke(userId);
+                    OnPlayerDeselectTeam?.Invoke(userId);
                     ActiveUsers.Remove(userId);
                 
-                    await BotCommandHelper.ShowActivePlayers(ActiveUsers);
-                        
+                    await BotCommandHelper.ShowActivePlayers(ActiveUsers, _messageReaction.ChannelId);
                     break;
                 case GameStage.Choosing:
                     if (ActiveUsers[userId].ClassType != PlayerClassType.None)
                     {
                         ActiveUsers[userId].ClassType = PlayerClassType.None;
-                        OnPlayerLeft?.Invoke(userId);
+                        OnPlayerDeselectTeam?.Invoke(userId);
                     }
-                        
                     break;
                 case GameStage.Started:
                     break;

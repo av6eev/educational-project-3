@@ -1,0 +1,338 @@
+fileFormatVersion: 2
+guid: 599e619efe3e860449c759c8b66184b5
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 9
+  spritePivot: {x: 0.49717313, y: 0.36082822}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 443, y: 178, z: 447, w: 504}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 2
+  alphaIsTransparency: 1
+  spriteTessellationDetail: 0
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 680
+        width: 500
+        height: 300
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b5ebab05c5f7f447b5daa8e121c9461
+      internalID: -531311188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_1
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 680
+        width: 500
+        height: 300
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 983972ce72571f540848a5d7725d282a
+      internalID: -596156027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_2
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 680
+        width: 500
+        height: 300
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d506cdb1c56e905469df0a95ee241dcb
+      internalID: 1616949925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 380
+        width: 500
+        height: 300
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8c4711fe9cd37a4db897c86cbcc141b
+      internalID: -1592648051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_4
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 379
+        width: 500
+        height: 300
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af6fab9f3a396f54ca84d1dd09c1f4e0
+      internalID: 303222061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_5
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 380
+        width: 500
+        height: 300
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 704996cdd4e00b44b8b0b6191a35ce4b
+      internalID: 1606415408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 500
+        height: 300
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 813dc20c280abf04fa1a1ed48db0f370
+      internalID: -2015251359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 182
+        width: 689
+        height: 298
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -344.5, y: 149}
+        - {x: -344.5, y: -149}
+        - {x: 344.5, y: -149}
+        - {x: 344.5, y: 149}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b04d98fa0f02b248b7b284e489a7140
+      internalID: 2136891624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_8
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 80
+        width: 500
+        height: 300
+      alignment: 9
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e68fee718bb895546ac59912e073c0be
+      internalID: 2106696510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline:
+    - - {x: -784.5, y: 490}
+      - {x: -784.5, y: -490}
+      - {x: 784.5, y: -490}
+      - {x: 784.5, y: 490}
+    - - {x: -338.5, y: -307}
+      - {x: -338.5, y: -13}
+      - {x: 339.5, y: -13}
+      - {x: 339.5, y: -307}
+    physicsShape:
+    - - {x: -339.5, y: -302}
+      - {x: -339.5, y: -17}
+      - {x: 335.5, y: -17}
+      - {x: 335.5, y: -302}
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_8: 2106696510
+      set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_2: 1616949925
+      button: 2136891624
+      set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_4: 303222061
+      set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_3: -1592648051
+      set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_6: -2015251359
+      set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_1: -596156027
+      set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_5: 1606415408
+      set-of-game-ui-rock-button-kit-for-gui-asset-elements-illustration-vector_0: -531311188
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

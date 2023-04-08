@@ -55,18 +55,22 @@ namespace Floor.System
                     {
                         areaCell.IsBorder = true;
                     }
-                    
-                    _model.Cells.Add(areaCell.Position, areaCell);           
+
+                    if (!_model.Cells.ContainsKey(areaCell.Position))
+                    {
+                        _model.Cells.Add(areaCell.Position, areaCell);           
+                    }
                 }
             }
-
+            
             GroupCells(_model.Cells, worldDescription);
-            SetupObjectLocation(_model.Cells.Values.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.Tree, worldDescription.TreesCount);
-            SetupObjectLocation(_model.Cells.Values.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.SmallRock, worldDescription.SmallRocksCount);
-            SetupObjectLocation(_model.Cells.Values.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.RockStructure, worldDescription.RockStructuresCount);
-            SetupObjectLocation(_model.Cells.Values.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.Lantern, worldDescription.LanternsCount);
-            SetupObjectLocation(_model.Cells.Values.Where(cell => !cell.IsPlayable && cell.IsEmpty).ToList(), PropType.Rock, default, true);
-
+            SetupObjectLocation(_model.Cells, PropType.Tree, worldDescription.TreesCount);
+            SetupObjectLocation(_model.Cells, PropType.SmallRock, worldDescription.SmallRocksCount);
+            SetupObjectLocation(_model.Cells, PropType.RockStructure, worldDescription.RockStructuresCount);
+            SetupObjectLocation(_model.Cells, PropType.Lantern, worldDescription.LanternsCount);
+            SetupObjectLocation(_model.Cells, PropType.Rock, default, true);
+            
+            
             _endGenerate();
         }
 
@@ -108,7 +112,7 @@ namespace Floor.System
             }
         }
 
-        private void SetupObjectLocation(IList<Cell> cells, PropType type, int propCount = 0, bool isBigStructure = false)
+        private void SetupObjectLocation(Dictionary<Vector3, Cell> cells, PropType type, int propCount = 0, bool isBigStructure = false)
         {
             if (isBigStructure)
             {
@@ -125,10 +129,12 @@ namespace Floor.System
                 for (var i = 0; i < propCount; i++)
                 {
                     var randomCell = UnityEngine.Random.Range(0, cells.Count);
-                    var cell = cells[randomCell];
 
-                    cell.PropType = type;
-                    cell.IsEmpty = false;    
+                    foreach (var cell in cells.Values.Where(cell => cell.Id == randomCell && cell is { IsPlayable: false, IsBorder: false, GroupId: 0, IsEmpty: true }))
+                    {
+                        cell.PropType = type;
+                        cell.IsEmpty = false;
+                    }
                 }
             }
         }

@@ -11,6 +11,9 @@ namespace Floor
         public readonly Dictionary<Vector3, Cell> Cells = new();
         public Vector3 FirstStartPosition;
         public Vector3 SecondStartPosition;
+        
+        public bool IsGenerated = false;
+        public float GenerationProgress;
 
         public Cell GetCellById(int id)
         {

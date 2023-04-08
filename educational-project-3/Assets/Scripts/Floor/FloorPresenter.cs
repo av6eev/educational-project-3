@@ -24,6 +24,8 @@ namespace Floor
 
         public void Activate()
         {
+            var count = 0;
+
             foreach (var cell in _model.Cells.Values)
             {
                 var position = cell.Position;
@@ -55,7 +57,12 @@ namespace Floor
                     default:
                         break;
                 }
+                
+                _model.GenerationProgress = (float)count / (float)_model.Cells.Count;
+                count++;
             }
+            
+            _model.IsGenerated = true;
         }
     }
 }

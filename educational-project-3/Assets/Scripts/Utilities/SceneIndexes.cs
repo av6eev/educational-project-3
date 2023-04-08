@@ -1,4 +1,4 @@
-namespace StartMenu
+namespace Utilities
 {
     public enum SceneIndexes
     {

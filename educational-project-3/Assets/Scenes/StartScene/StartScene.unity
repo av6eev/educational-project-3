@@ -1195,7 +1195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.8536582, b: 1, a: 1}
+  m_Color: {r: 0.5983335, g: 0.990566, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2451,7 +2451,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5252517cc59b4d54b12456ea4f687817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Instance: {fileID: 2132896679}
-  _loaderCanvas: {fileID: 367203078}
-  _progressBar: {fileID: 1922974887}
+  DescriptionsCollection: {fileID: 11400000, guid: c279d3e7cde403b4eb020c5dec3d2372,
+    type: 2}
+  LoaderCanvas: {fileID: 367203078}
+  ProgressBar: {fileID: 1922974887}
+  LoadingTxt: {fileID: 1830925090}
+  KeyInputField: {fileID: 1666436777}
   NewGameBtn: {fileID: 1455260995}

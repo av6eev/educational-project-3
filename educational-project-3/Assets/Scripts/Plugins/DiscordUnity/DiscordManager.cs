@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using Bot;
 using Floor;
 using Floor.System;
 using Game;
-using Player.System;
 using Plugins.DiscordUnity.DiscordUnity.API;
 using Plugins.DiscordUnity.DiscordUnity.State;
 using UnityEngine;

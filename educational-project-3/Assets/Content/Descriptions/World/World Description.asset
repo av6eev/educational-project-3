@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: World Description
   m_EditorClassIdentifier: 
   Description:
-    Id: 1
     X: 20
     Z: 20
     AreaX: 60

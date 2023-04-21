@@ -35,26 +35,41 @@ namespace Player
             _model.OnPlayerMove += MovePlayer;
         }
 
-        private async void MovePlayer(Vector3 direction)
+        private async void MovePlayer(Vector3 direction, Vector3 newAngle)
         {
+            var cells = _manager.FloorModel.Cells;
             var position = _model.Position + direction;
-            var newCell = new Vector3(position.x, 0, position.z);
+            
+            cells.TryGetValue(new Vector3(position.x, 0, position.z), out var newCell);
 
-            foreach (var cell in _manager.FloorModel.Cells.Values.Where(cell => cell.Position == newCell))
+            if (newCell is not { IsPlayable: true })
             {
-                cell.IsActive = true;
-            }            
+                _manager.GameModel.ChangeTurn();
+                return;
+            }
+            
+            cells[new Vector3(_manager.GameModel.ActivePlayer.Position.x, 0, _manager.GameModel.ActivePlayer.Position.z)].IsActive = false;
+            newCell.IsActive = true;
 
-            await Task.Delay(1000);
+            _model.Direction = direction;
+            _model.Position += direction;
+            _model.Angle = newAngle;
+
+            _view.PlayWalkAnimation(true);
+
+            await Task.Delay(3000);            
             
             _model.Direction = Vector3.zero;
-            
-            _manager.GameModel.ChangeTurn();
+            _view.PlayWalkAnimation(false);
+
+            // _manager.GameModel.ChangeTurn();
         }
 
         private void InitPlayer()
         {
+            _view.Animator.runtimeAnimatorController = _manager.GameDescriptions.Players[_model.ClassType].AnimatorOverrideController;
             _view.Text.text = _model.Name;
+            
             _view.Enable();
         }
         

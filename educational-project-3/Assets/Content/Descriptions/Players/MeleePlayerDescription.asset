@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description:
     Type: 0
-    Prefab: {fileID: 3619604669763629948, guid: 9daf526132b071a4db28e813fdbd7f2c,
+    Prefab: {fileID: 2284560326030268348, guid: 446eed7bbad2d0b40849710841cc5849,
       type: 3}
-    AttackDamage: 0
+    AnimatorOverrideController: {fileID: 22100000, guid: 25fb2ad356add8d40bea3c410a670b87,
+      type: 2}
+    AttackDamage: 5
     Resistance: 0

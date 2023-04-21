@@ -18,7 +18,7 @@ namespace Floor
         public List<SmallRockView> SmallRockPrefabs;
         public List<RocksStructureView> RocksStructurePrefabs;
         public List<LanternView> LanternView;
-
+        
         public CellView InitializeCell(Vector3 position, int type)
         {
             var cell = Instantiate(CellPrefabs[type], position, Quaternion.identity);

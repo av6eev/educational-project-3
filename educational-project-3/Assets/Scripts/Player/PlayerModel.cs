@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Player
@@ -8,10 +7,10 @@ namespace Player
     {
         public event Action OnPlayerCreated;
         public event Action OnPlayerRemoved;
-        public event Action<Vector3> OnPlayerMove;
+        public event Action<Vector3, Vector3> OnPlayerMove;
         
-        public Vector3 Position { get; private set; } = Vector3.zero;
-        public Vector3 Angle { get; private set; } = Vector3.zero;
+        public Vector3 Position { get; set; } = Vector3.zero;
+        public Vector3 Angle { get; set; } = Vector3.zero;
         public Vector3 Direction { get; set; } = Vector3.zero;
         
         public string Id { get; }
@@ -28,13 +27,6 @@ namespace Player
             ClassType = PlayerClassType.None;
         }
 
-        public void SetPosition(Vector3 direction, Vector3 newAngle)
-        {
-            Position += direction;
-            Angle = newAngle;
-            Direction = direction;
-        }
-
         public void CreatePlayer(Vector3 position, Vector3 angle)
         {
             Position = position;
@@ -48,9 +40,9 @@ namespace Player
             OnPlayerRemoved?.Invoke();
         }
 
-        public void Move(Vector3 direction)
+        public void Move(Vector3 direction, Vector3 newAngle)
         {
-            OnPlayerMove?.Invoke(direction);
+            OnPlayerMove?.Invoke(direction, newAngle);
         }
     }
 }

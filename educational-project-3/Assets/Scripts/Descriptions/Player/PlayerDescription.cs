@@ -8,9 +8,10 @@ namespace Descriptions.Player
     [Serializable]
     public class PlayerDescription : IDescription
     {
-        [Header("Type And Prefab")] 
+        [Header("General")] 
         public PlayerClassType Type;
         public PlayerView Prefab;
+        public AnimatorOverrideController AnimatorOverrideController;
 
         [Header("Class Stats")] 
         public int AttackDamage;

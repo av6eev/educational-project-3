@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Cells;
 using Descriptions.World;
 using Game;
@@ -13,29 +12,37 @@ namespace Floor.System
 {
     public class GenerateWorldSystem : ISystem
     {
+        private readonly Action _endGenerate;
+
         private readonly FloorModel _model;
         private readonly GameManager _manager;
-        private readonly Action _endGenerate;
+        private readonly WorldDescription _worldDescription;
+        
+        private readonly int _cornerX1;
+        private readonly int _cornerX2;
+        private readonly int _cornerZ1; 
+        private readonly int _cornerZ2;
 
         public GenerateWorldSystem(FloorModel model, GameManager manager, Action endGenerate)
         {
             _model = model;
             _manager = manager;
             _endGenerate = endGenerate;
+            _worldDescription = _manager.GameDescriptions.World;
+            
+            _cornerX1 = _worldDescription.AreaX / 2 - _worldDescription.X / 2;
+            _cornerX2 = _worldDescription.AreaX / 2 + _worldDescription.X / 2;
+            _cornerZ1 = _worldDescription.AreaZ / 2 - _worldDescription.Z / 2;
+            _cornerZ2 = _worldDescription.AreaZ / 2 + _worldDescription.Z / 2;
         }
         
         public void Update(float deltaTime)
         {
-            var worldDescription = _manager.GameDescriptions.World;
-            var cornerX1 = worldDescription.AreaX / 2 - worldDescription.X / 2;
-            var cornerX2 = worldDescription.AreaX / 2 + worldDescription.X / 2;
-            var cornerZ1 = worldDescription.AreaZ / 2 - worldDescription.Z / 2; 
-            var cornerZ2 = worldDescription.AreaZ / 2 + worldDescription.Z / 2;
             var id = 0;
             
-            for (var x = 0; x < worldDescription.AreaX; x++)
+            for (var x = 0; x < _worldDescription.AreaX; x++)
             {
-                for (var z = 0; z < worldDescription.AreaZ; z++)
+                for (var z = 0; z < _worldDescription.AreaZ; z++)
                 {
                     var position = new Vector3(x, 0, z);
                     var areaCell = new Cell(id++)
@@ -45,13 +52,13 @@ namespace Floor.System
                         IsPlayable = false,
                         IsEmpty = true,
                         PropType = PropType.None,
-                        YOffset = GenerateNoise(x, z, worldDescription.DetailScale) * worldDescription.NoiseHeight
+                        YOffset = GenerateNoise(x, z, _worldDescription.DetailScale) * _worldDescription.NoiseHeight
                     };
-                    
-                    SetupPlayableZone(x, cornerX1, cornerX2, z, cornerZ1, cornerZ2, areaCell, position);
-                    SetupCameras(x, z, cornerX1, cornerZ1, cornerX2, cornerZ2, worldDescription);
 
-                    if (x == 0 || x == worldDescription.AreaX  || z == 0 || z == worldDescription.AreaZ )
+                    SetupPlayableZone(x, _cornerX1, _cornerX2, z, _cornerZ1, _cornerZ2, areaCell, position);
+                    SetupCameras(x, z, _cornerX1, _cornerZ1, _cornerX2, _cornerZ2, _worldDescription);
+
+                    if (x == 0 || x == _worldDescription.AreaX  || z == 0 || z == _worldDescription.AreaZ )
                     {
                         areaCell.IsBorder = true;
                     }
@@ -63,25 +70,33 @@ namespace Floor.System
                 }
             }
             
-            GroupCells(_model.Cells, worldDescription);
-            SetupObjectLocation(_model.Cells, PropType.Tree, worldDescription.TreesCount);
-            SetupObjectLocation(_model.Cells, PropType.SmallRock, worldDescription.SmallRocksCount);
-            SetupObjectLocation(_model.Cells, PropType.RockStructure, worldDescription.RockStructuresCount);
-            SetupObjectLocation(_model.Cells, PropType.Lantern, worldDescription.LanternsCount);
-            SetupObjectLocation(_model.Cells, PropType.Rock, default, true);
-            
-            
+            GroupCells(_worldDescription);
+            SetupObjectLocation(PropType.Tree, _worldDescription.TreesCount);
+            SetupObjectLocation(PropType.SmallRock, _worldDescription.SmallRocksCount);
+            SetupObjectLocation(PropType.RockStructure, _worldDescription.RockStructuresCount);
+            SetupObjectLocation(PropType.Lantern, _worldDescription.LanternsCount);
+            SetupObjectLocation(PropType.Rock, default, true);
+
             _endGenerate();
         }
 
-        private void GroupCells(Dictionary<Vector3, Cell> cells, WorldDescription description)
+        private void GroupCells(WorldDescription description)
         {
+            var cells = _model.Cells;
             var random = new Random();
+            var count = 0;
 
+            foreach (var cell in cells.Values)
+            {
+                if (cell is not { IsPlayable: false, IsBorder: false, IsEmpty: true, GroupId: 0 }) continue;
+                
+                count++;
+            }
+            
             for (var i = 0; i < 50; i++)
             {
                 var chance = random.NextSingleFloat();
-                var targetCell = _model.GetCellById(random.Next(cells.Where(cell => !cell.Value.IsPlayable && !cell.Value.IsBorder && cell.Value.GroupId == 0 && cell.Value.IsEmpty).Count()));
+                var targetCell = _model.GetCellById(random.Next(count));
                 var groupId = i + 1;
                 
                 if (targetCell == null) continue;
@@ -112,26 +127,31 @@ namespace Floor.System
             }
         }
 
-        private void SetupObjectLocation(Dictionary<Vector3, Cell> cells, PropType type, int propCount = 0, bool isBigStructure = false)
+        private void SetupObjectLocation(PropType type, int propCount = 0, bool isBigStructure = false)
         {
             if (isBigStructure)
             {
                 var groupsId = _model.GetAllGroups(3);
 
-                foreach (var cell in groupsId.SelectMany(id => _model.GetGroupById(id, 3)))
+                foreach (var id in groupsId)
                 {
-                    cell.PropType = type;
-                    cell.IsEmpty = false;
+                    foreach (var cell in _model.GetGroupById(id, 3))
+                    {
+                        cell.PropType = type;
+                        cell.IsEmpty = false;
+                    }    
                 }
             }
             else
             {
                 for (var i = 0; i < propCount; i++)
                 {
-                    var randomCell = UnityEngine.Random.Range(0, cells.Count);
+                    var randomCell = UnityEngine.Random.Range(0, _model.Cells.Count);
 
-                    foreach (var cell in cells.Values.Where(cell => cell.Id == randomCell && cell is { IsPlayable: false, IsBorder: false, GroupId: 0, IsEmpty: true }))
+                    foreach (var cell in _model.Cells.Values)
                     {
+                        if (cell.Id != randomCell || cell is not { IsPlayable: false, IsBorder: false, GroupId: 0, IsEmpty: true }) continue;
+                        
                         cell.PropType = type;
                         cell.IsEmpty = false;
                     }

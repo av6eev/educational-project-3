@@ -7,6 +7,9 @@ namespace Player
     {
         public TextMeshPro Text;
         public GameObject Root;
+        public Animator Animator;
+        
+        private static readonly int IsWalking = Animator.StringToHash("IsWalking");
         
         public void DestroyPlayer()
         {
@@ -21,6 +24,11 @@ namespace Player
         public void Enable()
         {
             Root.SetActive(true);
+        }
+
+        public void PlayWalkAnimation(bool state)
+        {
+            Animator.SetBool(IsWalking, state);
         }
     }
 }

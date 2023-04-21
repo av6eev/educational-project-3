@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Floor;
 using Game;
 using Player;
 using UnityEngine;
@@ -55,7 +54,7 @@ namespace Bot
         private void CreatePlayer(string playerId, Vector3 basePosition, float angle)
         {
             var playerModel = _model.ActiveUsers[playerId];
-            var position = new Vector3(basePosition.x, 0.29f, basePosition.z);
+            var position = new Vector3(basePosition.x, 0.25f, basePosition.z);
             var presenter = new PlayerPresenter(playerModel, _manager, _manager.GameView.InstantiatePlayer(playerId, position, angle));
             
             presenter.Activate();

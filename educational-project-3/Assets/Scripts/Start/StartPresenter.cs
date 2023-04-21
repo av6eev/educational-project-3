@@ -23,11 +23,6 @@ namespace Start
             _presenter = new StartGamePresenter(_manager, View);
             _presenter.Activate();
         }
-        
-        private void Update()
-        {
-            _systemEngine.Update(Time.deltaTime);
-        }
 
         private void FixedUpdate()
         {

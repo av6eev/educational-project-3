@@ -29,8 +29,7 @@ namespace Floor
             foreach (var cell in _model.Cells.Values)
             {
                 var position = cell.Position;
-                var view = _view.InitializeCell(new Vector3(position.x, cell.YOffset, position.z), cell.Type);
-                view.Text.text = $"{cell.GroupSize}";
+                _view.InitializeCell(new Vector3(position.x, cell.YOffset, position.z), cell.Type);
                 
                 switch (cell.PropType)
                 {

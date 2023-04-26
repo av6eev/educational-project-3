@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 2028640279599025154}
   - component: {fileID: 2028640279599025155}
   - component: {fileID: 5578890986118526810}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor_v2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2028640279599025152
 Transform:
@@ -129,7 +129,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &4241691821407440521
 RectTransform:

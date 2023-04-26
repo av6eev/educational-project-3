@@ -5,6 +5,6 @@ namespace Props.Tree
 {
     public class TreeView : MonoBehaviour, IFloorObject
     {
-        
+        public PropType Type => PropType.Tree;
     }
 }

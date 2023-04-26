@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: World Description
   m_EditorClassIdentifier: 
   Description:
-    Id: 1
-    X: 20
-    Z: 20
+    X: 8
+    Z: 8
     AreaX: 60
     AreaZ: 60
     NoiseHeight: 0.6

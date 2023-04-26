@@ -62,7 +62,7 @@ namespace Start
 
             _manager.GameView = GameObject.Find("GameView").GetComponent<GameView>();
             
-            _manager.SystemEngine.Add(SystemTypes.GenerateWorldSystem, new GenerateWorldSystem(_manager.FloorModel, _manager, EndGenerate));
+            _manager.FixedSystemEngine.Add(SystemTypes.GenerateWorldSystem, new GenerateWorldSystem(_manager.FloorModel, _manager, EndGenerate));
    
             _presenterEngine.Add(new BotPresenter(_manager.BotModel, _manager));
             _presenterEngine.Add(new FloorPresenter(_manager.FloorModel, _manager.GameView.FloorView, _manager));
@@ -74,7 +74,7 @@ namespace Start
 
         private void EndGenerate()
         {
-            _manager.SystemEngine.Remove(SystemTypes.GenerateWorldSystem);
+            _manager.FixedSystemEngine.Remove(SystemTypes.GenerateWorldSystem);
             _presenterEngine.Activate();
         }
 

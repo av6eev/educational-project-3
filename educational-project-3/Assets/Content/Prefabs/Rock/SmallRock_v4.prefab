@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 5266510932833224265}
   - component: {fileID: 611853891074334784}
   - component: {fileID: 1719522750833010844}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SmallRock_v4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6013095807677488083
 Transform:

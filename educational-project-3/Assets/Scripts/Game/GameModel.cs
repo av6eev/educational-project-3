@@ -40,5 +40,10 @@ namespace Game
         {
             OnTurnChanged?.Invoke();
         }
+
+        public PlayerModel GetEnemyModel()
+        {
+            return _players.Find(player => player.Id != ActivePlayer.Id);
+        }
     }
 }

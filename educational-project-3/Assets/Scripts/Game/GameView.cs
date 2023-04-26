@@ -21,8 +21,16 @@ namespace Game
         
         public GameObject UIRoot;
         public TextMeshProUGUI TurnCooldownTxt;
-        public Button SkipButton; 
-        
+        public Button SkipButton;
+
+        private void Update()
+        {
+            foreach (var view in Players.Values)
+            {
+                view.InfoRoot.transform.rotation = Quaternion.LookRotation(view.InfoRoot.transform.position - CameraManager.MainCamera.transform.position);
+            }
+        }
+
         public PlayerView InstantiatePlayer(string playerId, Vector3 position, float angle)
         {
             var view = Instantiate(PlayerView, position, Quaternion.Euler(0f, angle, 0f));

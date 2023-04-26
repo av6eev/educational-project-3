@@ -49,7 +49,7 @@ namespace Game
             
             await BotCommandHelper.OnChangeTurn(_model.ActivePlayer.Name, _model.ChannelId);
 
-            _manager.FixedSystemEngine.Add(SystemTypes.PlayerMovementSystem, new PlayerMovementSystem(_manager));
+            _manager.SystemEngine.Add(SystemTypes.PlayerMovementSystem, new PlayerMovementSystem(_manager));
             
             if (_coroutine != null) return;
             _coroutine = GameCoroutines.RunCoroutine(TurnFunction());

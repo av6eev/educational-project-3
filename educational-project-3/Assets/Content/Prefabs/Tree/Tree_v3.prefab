@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3557051156348131893}
   - component: {fileID: 8457547888881184833}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tree_v3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,8 +110,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8391495931180976819, guid: 234f4ec10bfb94b42ba0c9b2188cc313,
         type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8391495931180976819, guid: 234f4ec10bfb94b42ba0c9b2188cc313,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: -7016224970960676820, guid: 234f4ec10bfb94b42ba0c9b2188cc313,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -7016224970960676820, guid: 234f4ec10bfb94b42ba0c9b2188cc313,
         type: 3}
@@ -132,6 +142,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: wd3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 234f4ec10bfb94b42ba0c9b2188cc313,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 234f4ec10bfb94b42ba0c9b2188cc313,
         type: 3}

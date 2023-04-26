@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2562405318720548729}
   - component: {fileID: 4651907462556635405}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tree_v2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,6 +110,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1701906915143911817, guid: 7b07eba6116bd414bb644779e340cf33,
         type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -1701906915143911817, guid: 7b07eba6116bd414bb644779e340cf33,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -117,6 +122,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: wd2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7b07eba6116bd414bb644779e340cf33,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7b07eba6116bd414bb644779e340cf33,
         type: 3}
@@ -133,6 +143,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8bf50488959a0a649a1c3b43b425fbcc, type: 2}
+    - target: {fileID: 6941153575225827292, guid: 7b07eba6116bd414bb644779e340cf33,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6941153575225827292, guid: 7b07eba6116bd414bb644779e340cf33,
         type: 3}
       propertyPath: m_StaticEditorFlags

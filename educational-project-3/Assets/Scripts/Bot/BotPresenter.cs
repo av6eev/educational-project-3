@@ -21,14 +21,14 @@ namespace Bot
         
         public void Deactivate()
         {
-            _model.OnPlayerEntered -= PlayerEntered;
+            _model.OnPlayersEntered -= PlayersEntered;
             _model.OnPlayerDeselectTeam -= RemoveActivePlayer;
             _model.OnGameStarting -= StartGame;
         }
 
         public void Activate()
         {
-            _model.OnPlayerEntered += PlayerEntered;
+            _model.OnPlayersEntered += PlayersEntered;
             _model.OnPlayerDeselectTeam += RemoveActivePlayer;
             _model.OnGameStarting += StartGame;
         }
@@ -41,30 +41,36 @@ namespace Bot
             _manager.GameModel.StartGame(_model.ActiveUsers, channelId);
         }
 
-        private void PlayerEntered(string playerId)
+        private void PlayersEntered()
         {
+            var players = _model.ActiveUsers.Values.ToList();
             var floorModel = _manager.FloorModel;
+            const float yOffset = 0.25f;
 
-            foreach (var cell in _manager.FloorModel.Cells.Values.Where(cell => cell.Position == floorModel.FirstStartPosition))
+            for (var i = 0; i < _model.ActiveUsers.Count; i++)
             {
-                CreatePlayer(playerId, !cell.IsActive ? floorModel.FirstStartPosition : floorModel.SecondStartPosition, !cell.IsActive ? 45 : -135);
-            }
-        }
+                var position = Vector3.zero;
+                var angle = 0f;
+                
+                switch (i)
+                {
+                    case 0:
+                        position = new Vector3(floorModel.FirstStartPosition.x, yOffset, floorModel.FirstStartPosition.z);
+                        angle = 45;
+                        break;
+                    case 1:
+                        position = new Vector3(floorModel.SecondStartPosition.x, yOffset, floorModel.SecondStartPosition.z);
+                        angle = -135;
+                        break;
+                }
+                
+                var presenter = new PlayerPresenter(players[i], _manager, _manager.GameView.InstantiatePlayer(players[i].Id, position, angle));
+                presenter.Activate();
+                _playerPresenters.Add(players[i].Id, presenter);
+            
+                players[i].CreatePlayer(position, new Vector3(0, angle, 0));
 
-        private void CreatePlayer(string playerId, Vector3 basePosition, float angle)
-        {
-            var playerModel = _model.ActiveUsers[playerId];
-            var position = new Vector3(basePosition.x, 0.25f, basePosition.z);
-            var presenter = new PlayerPresenter(playerModel, _manager, _manager.GameView.InstantiatePlayer(playerId, position, angle));
-            
-            presenter.Activate();
-            _playerPresenters.Add(playerId, presenter);
-            
-            playerModel.CreatePlayer(position, new Vector3(0, angle, 0));
-            
-            foreach (var cell in _manager.FloorModel.Cells.Values.Where(cell => cell.Position == basePosition))
-            {
-                cell.IsActive = true;
+                floorModel.Cells[new Vector3(position.x, 0, position.z)].IsActive = true;
             }
         }
 

@@ -14,7 +14,8 @@ namespace Descriptions.Player
         public AnimatorOverrideController AnimatorOverrideController;
 
         [Header("Class Stats")] 
-        public int AttackDamage;
-        public int Resistance;
+        public float MaxHealth;
+        public float AttackDamage;
+        [Range(0, 100)] public float Resistance;
     }
 }

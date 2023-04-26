@@ -11,7 +11,7 @@ namespace Bot
 {
     public class BotModel
     {
-        public Action<string> OnPlayerEntered;
+        public Action OnPlayersEntered;
         public Action<string> OnPlayerDeselectTeam;
         public Action<string> OnGameStarting;
         
@@ -105,11 +105,11 @@ namespace Bot
             }
 
             _manager.GameView.PlayerView = prefab;
-
-            OnPlayerEntered?.Invoke(model.Id);
             
             if (ActiveUsers.Values.Count(user => user.ClassType != PlayerClassType.None) == _manager.GameDescriptions.World.MaxPlayersCount)
             {
+                OnPlayersEntered?.Invoke();
+
                 _manager.GameModel.GameStage = GameStage.Started;
                 
                 await BotCommandHelper.OnGameStarted(_messageReaction.ChannelId);
@@ -128,30 +128,30 @@ namespace Bot
             var direction = Vector3.zero;
             var rotationAngle = Vector3.zero;
             
-            if (reaction.UserId == activePlayer.Id)
+            if (reaction.Member.User.Id != activePlayer.Id) return;
+            
+            switch (reaction.Emoji.Name)
             {
-                switch (reaction.Emoji.Name)
-                {
-                    case BotCommandHelper.MoveTopEmoji:
-                        direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.forward : Vector3.back;
-                        rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.zero : new Vector3(0, 180, 0);
-                        break;
-                    case BotCommandHelper.MoveBottomEmoji:
-                        direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.back : Vector3.forward;
-                        rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 180, 0) : Vector3.zero;
-                        break;
-                    case BotCommandHelper.MoveLeftEmoji:
-                        direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.left : Vector3.right;
-                        rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, -90, 0) : new Vector3(0, 90, 0);
-                        break;
-                    case BotCommandHelper.MoveRightEmoji:
-                        direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.right : Vector3.left;
-                        rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 90, 0) : new Vector3(0, -90, 0);
-                        break;
-                    case BotCommandHelper.HitActionEmoji:
-                        break;
-                }    
-            }
+                case BotCommandHelper.MoveTopEmoji:
+                    direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.forward : Vector3.back;
+                    rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.zero : new Vector3(0, 180, 0);
+                    break;
+                case BotCommandHelper.MoveBottomEmoji:
+                    direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.back : Vector3.forward;
+                    rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 180, 0) : Vector3.zero;
+                    break;
+                case BotCommandHelper.MoveLeftEmoji:
+                    direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.left : Vector3.right;
+                    rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, -90, 0) : new Vector3(0, 90, 0);
+                    break;
+                case BotCommandHelper.MoveRightEmoji:
+                    direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.right : Vector3.left;
+                    rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 90, 0) : new Vector3(0, -90, 0);
+                    break;
+                case BotCommandHelper.HitActionEmoji:
+                    activePlayer.Attack();
+                    return;
+            }    
 
             activePlayer.Move(direction, rotationAngle);
         }

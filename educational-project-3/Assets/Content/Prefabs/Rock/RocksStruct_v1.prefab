@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7999554594304554603}
   - component: {fileID: 9123392299898567829}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RocksStruct_v1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,6 +117,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2605548013052243752, guid: a122f2bca885d2d48a130b8df1e21105,
         type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2605548013052243752, guid: a122f2bca885d2d48a130b8df1e21105,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -141,6 +146,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SmallRock_v1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4086260841857667045, guid: f4ab65091e484394b8b260f9d2032823,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4086260841857667045, guid: f4ab65091e484394b8b260f9d2032823,
         type: 3}
@@ -278,6 +288,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SmallRock_v2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5519942892273836113, guid: 11850556aab02e343afc91ef8d874178,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5519942892273836113, guid: 11850556aab02e343afc91ef8d874178,
         type: 3}

@@ -15,6 +15,7 @@ namespace Player
         public Image HealthBar;
         public TextMeshPro Text;
         public GameObject Root;
+        public Transform Orientation;
 
         public LayerMask TargetMask;
         public LayerMask EnvironmentMask;

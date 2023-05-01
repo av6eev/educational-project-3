@@ -1011,9 +1011,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParentGo: {fileID: 465664476}
   CellPrefabs:
-  - {fileID: 724660936616387037, guid: cdb55fcec6b5e024aa036badf7951bbc, type: 3}
-  - {fileID: 5578890986118526810, guid: be715d7fc11d2654fb203bd0434c7b26, type: 3}
-  - {fileID: 8031170665299576579, guid: c64871f8eead1b14091b84b5528649de, type: 3}
+  - {fileID: 6407396730952341384, guid: 59fcf709f4d2a1b4fb93c1be98af232e, type: 3}
+  - {fileID: 3861400438340311036, guid: c1dd1e06c26638b4b8a3f912a4366d9e, type: 3}
+  - {fileID: 5455094159461161669, guid: abb13dbd97f9b6545abb876bcd60d373, type: 3}
+  - {fileID: 1985735129822506857, guid: 00bc6d75b2cbc1a45bfa621850b82d8d, type: 3}
+  - {fileID: 8805472105572583157, guid: 8162b75091caf804a948ad7680f699c6, type: 3}
+  - {fileID: 6732256117086052552, guid: 26217193acaf7274dbc66e5a709a217b, type: 3}
+  - {fileID: 2751222411113267824, guid: 0a3083e9dde68d74d93d37265326bc8a, type: 3}
   TreePrefabs:
   - {fileID: 6667689234810750295, guid: f8f133b6ff0ec324aa9460322d3525d7, type: 3}
   - {fileID: 4651907462556635405, guid: a86e4781800617e49ac37091e6ef0065, type: 3}
@@ -1028,8 +1032,10 @@ MonoBehaviour:
   - {fileID: 1719522750833010844, guid: 6880e08f26699c7469b3e7b8b7870f28, type: 3}
   RocksStructurePrefabs:
   - {fileID: 9123392299898567829, guid: 214acec0dc23c074c9ca7d274671bbcc, type: 3}
-  LanternView:
+  LanternPrefabs:
   - {fileID: 1693128122464240286, guid: 34939de9df8f901488265743cac51868, type: 3}
+  GrassPrefabs:
+  - {fileID: 5221945240924248402, guid: e74c458930fd9d34a8572678441ae857, type: 3}
 --- !u!4 &465664476
 Transform:
   m_ObjectHideFlags: 0

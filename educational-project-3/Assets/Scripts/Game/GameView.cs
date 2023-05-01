@@ -14,11 +14,11 @@ namespace Game
     {
         [NonSerialized] public PlayerView PlayerView;
         [NonSerialized] public readonly Dictionary<string, PlayerView> Players = new();
-        
+
         public DescriptionsCollectionSo DescriptionsCollection;
         public FloorView FloorView;
         public CameraManager CameraManager;
-        
+
         public GameObject UIRoot;
         public TextMeshProUGUI TurnCooldownTxt;
         public Button SkipButton;
@@ -34,9 +34,9 @@ namespace Game
         public PlayerView InstantiatePlayer(string playerId, Vector3 position, float angle)
         {
             var view = Instantiate(PlayerView, position, Quaternion.Euler(0f, angle, 0f));
-            
+
             Players.Add(playerId, view);
-            
+
             return view;
         }
 
@@ -44,7 +44,7 @@ namespace Game
         {
             UIRoot.SetActive(true);
         }
-        
+
         public void Disable()
         {
             UIRoot.SetActive(false);

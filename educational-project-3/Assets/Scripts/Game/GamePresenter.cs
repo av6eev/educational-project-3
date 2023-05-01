@@ -39,8 +39,8 @@ namespace Game
 
         private async void GameStarted()
         {
-            _manager.GameView.CameraManager.Enable();
-            await Task.Delay(8700);
+            // _manager.GameView.CameraManager.Enable();
+            // await Task.Delay(8700);
 
             _model.TurnTime = _manager.GameDescriptions.World.TurnCooldown;
 
@@ -49,7 +49,7 @@ namespace Game
             
             await BotCommandHelper.OnChangeTurn(_model.ActivePlayer.Name, _model.ChannelId);
 
-            _manager.SystemEngine.Add(SystemTypes.PlayerMovementSystem, new PlayerMovementSystem(_manager));
+            _manager.FixedSystemEngine.Add(SystemTypes.PlayerMovementSystem, new PlayerMovementSystem(_manager));
             
             if (_coroutine != null) return;
             _coroutine = GameCoroutines.RunCoroutine(TurnFunction());

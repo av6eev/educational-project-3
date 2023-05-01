@@ -1,6 +1,7 @@
 using Game;
 using UnityEngine;
 using Utilities;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Player.System
 {
@@ -8,9 +9,6 @@ namespace Player.System
     {
         private readonly GameManager _manager;
         
-        private const float LerpSpeed = 0.01f;
-        private const float MoveTowardsSpeed = 0.06f;
-
         public PlayerMovementSystem(GameManager manager)
         {
             _manager = manager;
@@ -22,13 +20,19 @@ namespace Player.System
             
             if (activePlayer.Direction == Vector3.zero) return;
 
+            var description = _manager.GameDescriptions.Players[activePlayer.ClassType];
             var transform = _manager.GameView.Players[activePlayer.Id].transform;
             var defaultPosition = transform.position;
-            var targetCellPosition = _manager.FloorModel.Cells[new Vector3(activePlayer.Position.x, 0, activePlayer.Position.z)].Position;
+            var targetCellPosition = _manager.FloorModel.Cells[new Vector3(activePlayer.Position.x + activePlayer.Direction.x, 0, activePlayer.Position.z + activePlayer.Direction.z)].Position;
             var targetPosition = new Vector3(targetCellPosition.x, 0.25f, targetCellPosition.z);
+            var targetRotation = Quaternion.LookRotation(targetPosition - defaultPosition);
             
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(activePlayer.Angle), .25f);
-            transform.position = Vector3.MoveTowards(defaultPosition, Vector3.Lerp(defaultPosition,targetPosition, LerpSpeed), MoveTowardsSpeed);
+            if (targetRotation != new Quaternion(0f,0f,0f,1f))
+            {
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, description.RotateTowardsSpeed * deltaTime);
+            }
+            
+            transform.position = Vector3.MoveTowards(defaultPosition, targetPosition, description.MoveTowardsSpeed);    
         }
     }
 }

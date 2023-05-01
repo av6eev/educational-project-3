@@ -48,11 +48,11 @@ Material:
     - _Wind_Speed: 1
     - _Wind_Strenght: 0.2
     m_Colors:
-    - _Bottom_Color: {r: 0.038613446, g: 0.3018868, b: 0, a: 0}
+    - _Bottom_Color: {r: 0.20024922, g: 0.5660378, b: 0.4386782, a: 0.30588236}
     - _Color: {r: 0.67909956, g: 0.69803923, b: 0.2784314, a: 0}
     - _Color_1: {r: 0.11788907, g: 0.4056604, b: 0.07079922, a: 0}
     - _Down_Color: {r: 0, g: 0.3207547, b: 0, a: 1}
-    - _Top_Color: {r: 0.68471813, g: 0.8396226, b: 0.24951048, a: 1}
+    - _Top_Color: {r: 0.11903704, g: 0.17957458, b: 0.23584908, a: 1}
     - _Up_Color: {r: 0.66523445, g: 0.8301887, b: 0.05873976, a: 1}
     - _WInd_Direction: {r: 10, g: 2, b: 0, a: 0}
   m_BuildTextureStacks: []

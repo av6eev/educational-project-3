@@ -7,6 +7,7 @@ namespace Floor
         SmallRock,
         RockStructure,
         Lantern,
+        Grass,
         None,
     }
 }

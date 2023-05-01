@@ -18,6 +18,9 @@ MonoBehaviour:
       type: 3}
     AnimatorOverrideController: {fileID: 22100000, guid: 25fb2ad356add8d40bea3c410a670b87,
       type: 2}
+    LerpSpeed: 0.04
+    MoveTowardsSpeed: 0.01
+    RotateTowardsSpeed: 300
     MaxHealth: 150
     AttackDamage: 20
     Resistance: 20

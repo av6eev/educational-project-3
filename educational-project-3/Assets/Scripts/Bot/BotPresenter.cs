@@ -56,11 +56,11 @@ namespace Bot
                 {
                     case 0:
                         position = new Vector3(floorModel.FirstStartPosition.x, yOffset, floorModel.FirstStartPosition.z);
-                        angle = 45;
+                        angle = 0;
                         break;
                     case 1:
                         position = new Vector3(floorModel.SecondStartPosition.x, yOffset, floorModel.SecondStartPosition.z);
-                        angle = -135;
+                        angle = -180;
                         break;
                 }
                 
@@ -68,7 +68,7 @@ namespace Bot
                 presenter.Activate();
                 _playerPresenters.Add(players[i].Id, presenter);
             
-                players[i].CreatePlayer(position, new Vector3(0, angle, 0));
+                players[i].CreatePlayer(position);
 
                 floorModel.Cells[new Vector3(position.x, 0, position.z)].IsActive = true;
             }

@@ -82,7 +82,7 @@ namespace Bot
         
         private static async void StartGameResponse(DiscordMessage message)
         {
-            await AddEmoji(message.ChannelId, message.Id, SmileEmoji);
+            // await AddEmoji(message.ChannelId, message.Id, SmileEmoji);
         }
 
         private static async void ChooseClass(DiscordMessage message)
@@ -121,7 +121,7 @@ namespace Bot
         private static async Task AddEmoji(string channelId, string messageId, string emoji)
         {
             await DiscordAPI.CreateReaction(channelId, messageId, emoji);
-            await Task.Delay(100);
+            await Task.Delay(50);
         }
     }
 }

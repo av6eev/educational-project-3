@@ -1,7 +1,7 @@
 using Floor;
 using UnityEngine;
 
-namespace Props.GrassView
+namespace Props.Grass
 {
     public class GrassView : MonoBehaviour, IFloorObject
     {

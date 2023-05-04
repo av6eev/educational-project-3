@@ -14,7 +14,6 @@ namespace Descriptions.Player
         public AnimatorOverrideController AnimatorOverrideController;
 
         [Header("Movement Settings")]
-        [Range(0f, 0.1f)] public float LerpSpeed = 0.04f;
         [Range(0f, 0.07f)] public float MoveTowardsSpeed = 0.06f;
         [Range(0f, 500f)] public float RotateTowardsSpeed = 300f;
         

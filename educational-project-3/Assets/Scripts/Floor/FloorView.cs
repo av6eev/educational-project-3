@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cells;
-using Props.GrassView;
+using Props.Bush;
+using Props.Grass;
 using Props.Lantern;
 using Props.Rock;
 using Props.Tree;
@@ -20,6 +21,7 @@ namespace Floor
         public List<RocksStructureView> RocksStructurePrefabs;
         public List<LanternView> LanternPrefabs;
         public List<GrassView> GrassPrefabs;
+        public List<BushView> BushPrefabs;
 
         public CellView InitializeCell(Vector3 position, int type)
         {

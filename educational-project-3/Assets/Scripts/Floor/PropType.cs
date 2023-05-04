@@ -8,6 +8,7 @@ namespace Floor
         RockStructure,
         Lantern,
         Grass,
+        Bush,
         None,
     }
 }

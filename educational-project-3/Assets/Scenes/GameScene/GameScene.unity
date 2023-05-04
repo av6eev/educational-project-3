@@ -1015,13 +1015,11 @@ MonoBehaviour:
   - {fileID: 3861400438340311036, guid: c1dd1e06c26638b4b8a3f912a4366d9e, type: 3}
   - {fileID: 5455094159461161669, guid: abb13dbd97f9b6545abb876bcd60d373, type: 3}
   - {fileID: 1985735129822506857, guid: 00bc6d75b2cbc1a45bfa621850b82d8d, type: 3}
-  - {fileID: 8805472105572583157, guid: 8162b75091caf804a948ad7680f699c6, type: 3}
   - {fileID: 6732256117086052552, guid: 26217193acaf7274dbc66e5a709a217b, type: 3}
   - {fileID: 2751222411113267824, guid: 0a3083e9dde68d74d93d37265326bc8a, type: 3}
   TreePrefabs:
-  - {fileID: 6667689234810750295, guid: f8f133b6ff0ec324aa9460322d3525d7, type: 3}
-  - {fileID: 4651907462556635405, guid: a86e4781800617e49ac37091e6ef0065, type: 3}
-  - {fileID: 8457547888881184833, guid: 086db7717d50be64481325e9db87c3c2, type: 3}
+  - {fileID: 2890741044619526290, guid: 35e20bffa93fca34da0d4e50bbb80e73, type: 3}
+  - {fileID: 3195543416785038475, guid: e7d33d7634a7fa0408118157982022eb, type: 3}
   RockPrefabs:
   - {fileID: 2394831979460885039, guid: 6fb5a3e39c5dca541b9efa6b1ffb2f82, type: 3}
   - {fileID: 7533541173167261766, guid: a329a5a831427354da29465b8940dca1, type: 3}
@@ -1036,6 +1034,8 @@ MonoBehaviour:
   - {fileID: 1693128122464240286, guid: 34939de9df8f901488265743cac51868, type: 3}
   GrassPrefabs:
   - {fileID: 5221945240924248402, guid: e74c458930fd9d34a8572678441ae857, type: 3}
+  BushPrefabs:
+  - {fileID: 2963740903037448703, guid: 54c69c30d6cb15946a4d708d27c6d840, type: 3}
 --- !u!4 &465664476
 Transform:
   m_ObjectHideFlags: 0

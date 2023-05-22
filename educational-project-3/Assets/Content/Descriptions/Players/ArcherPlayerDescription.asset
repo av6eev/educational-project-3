@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description:
     Type: 1
-    Prefab: {fileID: 3619604669763629948, guid: 599cd4b2cb9678b4398109afd6ef7df5,
+    Prefab: {fileID: 2284560326030268348, guid: 869bbafe57c4d7542aa32808a3c13dda,
       type: 3}
+    AnimatorOverrideController: {fileID: 22100000, guid: ad74886ffc27bba41b6abe21637c811f,
+      type: 2}
+    MoveTowardsSpeed: 0.01
+    RotateTowardsSpeed: 300
+    MaxHealth: 0
     AttackDamage: 0
     Resistance: 0

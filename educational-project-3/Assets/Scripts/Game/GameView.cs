@@ -12,7 +12,6 @@ namespace Game
 {
     public class GameView : MonoBehaviour
     {
-        [NonSerialized] public PlayerView PlayerView;
         [NonSerialized] public readonly Dictionary<string, PlayerView> Players = new();
 
         public DescriptionsCollectionSo DescriptionsCollection;
@@ -27,16 +26,17 @@ namespace Game
         {
             foreach (var view in Players.Values)
             {
-                view.InfoRoot.transform.rotation = Quaternion.LookRotation(view.InfoRoot.transform.position - CameraManager.MainCamera.transform.position);
+                var infoRootTransform = view.InfoRoot.transform;
+                
+                infoRootTransform.rotation = Quaternion.LookRotation(infoRootTransform.position - CameraManager.MainCamera.transform.position);
             }
         }
 
-        public PlayerView InstantiatePlayer(string playerId, Vector3 position, float angle)
+        public PlayerView InstantiatePlayer(PlayerView playerView, string playerId, Vector3 position, float angle)
         {
-            var view = Instantiate(PlayerView, position, Quaternion.Euler(0f, angle, 0f));
+            var view = Instantiate(playerView, position, Quaternion.Euler(0f, angle, 0f));
 
             Players.Add(playerId, view);
-
             return view;
         }
 

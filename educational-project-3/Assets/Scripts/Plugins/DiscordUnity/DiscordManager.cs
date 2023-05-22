@@ -155,7 +155,7 @@ namespace Plugins.DiscordUnity
             switch (Manager.GameModel.GameStage)
             {
                 case GameStage.Preparing:
-                    Manager.BotModel.AddUsers(messageReaction);
+                    Manager.BotModel.ChooseTeam(messageReaction);
                     break;
                 case GameStage.Choosing:
                     Manager.BotModel.ChooseClass(messageReaction);

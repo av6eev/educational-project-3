@@ -24,15 +24,14 @@ namespace Player.System
             var transform = _manager.GameView.Players[activePlayer.Id].transform;
             var defaultPosition = transform.position;
             var targetCellPosition = _manager.FloorModel.Cells[new Vector3(activePlayer.Position.x + activePlayer.Direction.x, 0, activePlayer.Position.z + activePlayer.Direction.z)].Position;
-            var targetPosition = new Vector3(targetCellPosition.x, 0.25f, targetCellPosition.z);
-            var targetRotation = Quaternion.LookRotation(targetPosition - defaultPosition);
+            var targetRotation = Quaternion.LookRotation(targetCellPosition - defaultPosition);
             
             if (targetRotation != new Quaternion(0f,0f,0f,1f))
             {
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, description.RotateTowardsSpeed * deltaTime);
             }
             
-            transform.position = Vector3.MoveTowards(defaultPosition, targetPosition, description.MoveTowardsSpeed);    
+            transform.position = Vector3.MoveTowards(defaultPosition, targetCellPosition, description.MoveTowardsSpeed);    
         }
     }
 }

@@ -21,31 +21,30 @@ namespace Bot
         
         public void Deactivate()
         {
-            _model.OnPlayersEntered -= PlayersEntered;
             _model.OnPlayerDeselectTeam -= RemoveActivePlayer;
             _model.OnGameStarting -= StartGame;
         }
 
         public void Activate()
         {
-            _model.OnPlayersEntered += PlayersEntered;
             _model.OnPlayerDeselectTeam += RemoveActivePlayer;
             _model.OnGameStarting += StartGame;
         }
 
         private void StartGame(string channelId)
         {
+            CreatePlayersPrefabs();
+            
             var presenter = new GamePresenter(_manager.GameModel, _manager.GameView, _manager);
             presenter.Activate();
             
             _manager.GameModel.StartGame(_model.ActiveUsers, channelId);
         }
 
-        private void PlayersEntered()
+        private void CreatePlayersPrefabs()
         {
             var players = _model.ActiveUsers.Values.ToList();
             var floorModel = _manager.FloorModel;
-            const float yOffset = 0.25f;
 
             for (var i = 0; i < _model.ActiveUsers.Count; i++)
             {
@@ -55,16 +54,16 @@ namespace Bot
                 switch (i)
                 {
                     case 0:
-                        position = new Vector3(floorModel.FirstStartPosition.x, yOffset, floorModel.FirstStartPosition.z);
+                        position = new Vector3(floorModel.FirstStartPosition.x, 0, floorModel.FirstStartPosition.z);
                         angle = 0;
                         break;
                     case 1:
-                        position = new Vector3(floorModel.SecondStartPosition.x, yOffset, floorModel.SecondStartPosition.z);
+                        position = new Vector3(floorModel.SecondStartPosition.x, 0, floorModel.SecondStartPosition.z);
                         angle = -180;
                         break;
                 }
                 
-                var presenter = new PlayerPresenter(players[i], _manager, _manager.GameView.InstantiatePlayer(players[i].Id, position, angle));
+                var presenter = new PlayerPresenter(players[i], _manager, _manager.GameView.InstantiatePlayer(_manager.GameDescriptions.Players[players[i].ClassType].Prefab, players[i].Id, position, angle));
                 presenter.Activate();
                 _playerPresenters.Add(players[i].Id, presenter);
             

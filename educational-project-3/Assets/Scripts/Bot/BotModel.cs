@@ -11,7 +11,6 @@ namespace Bot
 {
     public class BotModel
     {
-        public Action OnPlayersEntered;
         public Action<string> OnPlayerDeselectTeam;
         public Action<string> OnGameStarting;
         
@@ -51,7 +50,7 @@ namespace Bot
             action?.Invoke(message);
         }
         
-        public async void AddUsers(DiscordMessageReaction reaction)
+        public async void ChooseTeam(DiscordMessageReaction reaction)
         {
             _messageReaction = reaction;
 
@@ -83,33 +82,17 @@ namespace Bot
             if (!CheckUser(newUser)) return;
 
             var model = ActiveUsers[newUser.Id];
-            PlayerView prefab = null;
-            
-            switch (reaction.Emoji.Name)
-            {
-                case BotCommandHelper.MeleeEmoji:
-                    model.ClassType = PlayerClassType.Melee;
-                    prefab = _manager.GameDescriptions.Players[PlayerClassType.Melee].Prefab;
-                    break;
-                case BotCommandHelper.ArcherEmoji:
-                    model.ClassType = PlayerClassType.Archer;
-                    prefab = _manager.GameDescriptions.Players[PlayerClassType.Archer].Prefab;
-                    break;
-                case BotCommandHelper.MageEmoji:
-                    model.ClassType = PlayerClassType.Mage;
-                    prefab = _manager.GameDescriptions.Players[PlayerClassType.Mage].Prefab;
-                    break;
-                default:
-                    model.ClassType = PlayerClassType.None;
-                    break;
-            }
 
-            _manager.GameView.PlayerView = prefab;
-            
+            model.ClassType = reaction.Emoji.Name switch
+            {
+                BotCommandHelper.MeleeEmoji => PlayerClassType.Melee,
+                BotCommandHelper.ArcherEmoji => PlayerClassType.Archer,
+                BotCommandHelper.MageEmoji => PlayerClassType.Mage,
+                _ => PlayerClassType.None
+            };
+
             if (ActiveUsers.Values.Count(user => user.ClassType != PlayerClassType.None) == _manager.GameDescriptions.World.MaxPlayersCount)
             {
-                OnPlayersEntered?.Invoke();
-
                 _manager.GameModel.GameStage = GameStage.Started;
                 
                 await BotCommandHelper.OnGameStarted(_messageReaction.ChannelId);
@@ -120,40 +103,22 @@ namespace Bot
         
         public void ChooseAction(DiscordMessageReaction reaction)
         {
-            _messageReaction = reaction;
-
-            if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
-            
             var activePlayer = _manager.GameModel.ActivePlayer;
-            var direction = Vector3.zero;
-            var rotationAngle = Vector3.zero;
             
+            _messageReaction = reaction;
+            
+            if (reaction.Member.User.Bot != null && reaction.Member.User.Bot != false) return;
             if (reaction.Member.User.Id != activePlayer.Id) return;
-            
+
             switch (reaction.Emoji.Name)
             {
-                case BotCommandHelper.MoveTopEmoji:
-                    direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.forward : Vector3.back;
-                    rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.zero : new Vector3(0, 180, 0);
-                    break;
-                case BotCommandHelper.MoveBottomEmoji:
-                    direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.back : Vector3.forward;
-                    rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 180, 0) : Vector3.zero;
-                    break;
-                case BotCommandHelper.MoveLeftEmoji:
-                    direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.left : Vector3.right;
-                    rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, -90, 0) : new Vector3(0, 90, 0);
-                    break;
-                case BotCommandHelper.MoveRightEmoji:
-                    direction = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? Vector3.right : Vector3.left;
-                    rotationAngle = activePlayer.TeamName == BotCommandHelper.FirstTeamEmoji ? new Vector3(0, 90, 0) : new Vector3(0, -90, 0);
-                    break;
                 case BotCommandHelper.HitActionEmoji:
                     activePlayer.Attack();
                     return;
+                default:
+                    activePlayer.Move(reaction.Emoji.Name);
+                    break;
             }    
-
-            activePlayer.Move(direction, rotationAngle);
         }
 
         public async void PlayerDeselectTeam(string userId, string emojiName)

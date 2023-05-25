@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Bot;
 using Game;
 using UnityEngine;
 using Utilities;
@@ -59,10 +60,37 @@ namespace Player
             _manager.GameModel.ChangeTurn();
         }
 
-        private async void MovePlayer(Vector3 direction, Vector3 newAngle)
+        private async void MovePlayer(string emoji)
         {
             var cells = _manager.FloorModel.Cells;
-            var position = _model.Position + direction;
+            var transform = _view.transform;
+            var forward = transform.forward;
+            var right = transform.right;
+
+            Vector3 moveDirection;
+            
+            switch (emoji)
+            {
+                case BotCommandHelper.MoveTopEmoji:
+                    moveDirection = forward;
+                    break;
+                case BotCommandHelper.MoveBottomEmoji:
+                    moveDirection = -forward;
+                    break;
+                case BotCommandHelper.MoveLeftEmoji:
+                    moveDirection = -right;
+                    break;
+                case BotCommandHelper.MoveRightEmoji:
+                    moveDirection = right;
+                    break;
+                default:
+                    moveDirection = Vector3.zero;
+                    break;
+            }
+            
+            Debug.Log(moveDirection);
+            Debug.Log(emoji);
+            var position = _model.Position + moveDirection;
             
             cells.TryGetValue(new Vector3(position.x, 0, position.z), out var newCell);
 
@@ -75,15 +103,15 @@ namespace Player
             cells[new Vector3(_manager.GameModel.ActivePlayer.Position.x, 0, _manager.GameModel.ActivePlayer.Position.z)].IsActive = false;
             newCell.IsActive = true;
 
-            _model.Direction = direction;
-            _model.Position += direction;
-            _model.Angle = newAngle;
+            _model.Direction = moveDirection;
 
             _view.PlayWalkAnimation(true);
 
-            await Task.Delay(3000);            
+            await Task.Delay(3500);            
             
+            _model.Position += moveDirection;
             _model.Direction = Vector3.zero;
+            
             _view.PlayWalkAnimation(false);
 
             _manager.GameModel.ChangeTurn();

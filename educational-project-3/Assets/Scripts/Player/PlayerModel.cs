@@ -7,12 +7,11 @@ namespace Player
     {
         public event Action OnPlayerCreated;
         public event Action OnPlayerRemoved;
-        public event Action<Vector3, Vector3> OnPlayerMove;
+        public event Action<string> OnPlayerMove;
         public event Action OnPlayerAttack;
         public event Action OnDealDamage;
         
         public Vector3 Position { get; set; } = Vector3.zero;
-        public Vector3 Angle { get; set; } = Vector3.zero;
         public Vector3 Direction { get; set; } = Vector3.zero;
         
         public string Id { get; }
@@ -34,10 +33,9 @@ namespace Player
             ClassType = PlayerClassType.None;
         }
 
-        public void CreatePlayer(Vector3 position, Vector3 angle)
+        public void CreatePlayer(Vector3 position)
         {
             Position = position;
-            Angle = angle;
             
             OnPlayerCreated?.Invoke();
         }
@@ -47,9 +45,9 @@ namespace Player
             OnPlayerRemoved?.Invoke();
         }
 
-        public void Move(Vector3 direction, Vector3 newAngle)
+        public void Move(string emoji)
         {
-            OnPlayerMove?.Invoke(direction, newAngle);
+            OnPlayerMove?.Invoke(emoji);
         }
 
         public void Attack()

@@ -48,7 +48,7 @@ namespace Floor.System
                     var areaCell = new Cell(id++)
                     {
                         Position = position,
-                        Type = 1,
+                        Type = UnityEngine.Random.Range(0, _manager.GameView.FloorView.CellPrefabs.Count),
                         IsPlayable = false,
                         IsEmpty = true,
                         PropType = PropType.None,
@@ -71,7 +71,9 @@ namespace Floor.System
             }
             
             GroupCells(_worldDescription);
+            SetupObjectLocation(PropType.Grass, _model.Cells.Count / 2);
             SetupObjectLocation(PropType.Tree, _worldDescription.TreesCount);
+            SetupObjectLocation(PropType.Bush, _worldDescription.BushesCount);
             SetupObjectLocation(PropType.SmallRock, _worldDescription.SmallRocksCount);
             SetupObjectLocation(PropType.RockStructure, _worldDescription.RockStructuresCount);
             SetupObjectLocation(PropType.Lantern, _worldDescription.LanternsCount);

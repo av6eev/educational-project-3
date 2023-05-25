@@ -19,6 +19,7 @@ namespace Descriptions.World
 
         [Header("Props Parameters")] 
         public int TreesCount = 20;
+        public int BushesCount = 10;
         public int SmallRocksCount = 10;
         public int RockStructuresCount = 2;
         public int LanternsCount = 3;

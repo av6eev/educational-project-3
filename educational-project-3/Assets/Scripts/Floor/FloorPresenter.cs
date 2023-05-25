@@ -34,22 +34,28 @@ namespace Floor
                 switch (cell.PropType)
                 {
                     case PropType.Tree:
-                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z), _view.TreePrefabs);
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z), Quaternion.Euler(-90, Random.Range(0, 360), 0), _view.TreePrefabs);
                         break;
                     case PropType.SmallRock:
-                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z), _view.SmallRockPrefabs);
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z),  Quaternion.Euler(0, Random.Range(0, 360), 0), _view.SmallRockPrefabs);
                         break;
                     case PropType.Rock:
                         if (cell.IsGroupCenter)
                         {
-                            _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z), _view.RockPrefabs);
+                            _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z),  Quaternion.Euler(0, Random.Range(0, 360), 0), _view.RockPrefabs);
                         }
                         break;
                     case PropType.RockStructure:
-                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .35f, position.z), _view.RocksStructurePrefabs);
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .35f, position.z),  Quaternion.Euler(0, Random.Range(0, 360), 0), _view.RocksStructurePrefabs);
                         break;
                     case PropType.Lantern:
-                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .4f, position.z), _view.LanternView);
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .4f, position.z),  Quaternion.Euler(0, Random.Range(0, 360), 0), _view.LanternPrefabs);
+                        break;
+                    case PropType.Grass:
+                        _view.InitializeFloorObject(new Vector3(position.x - .05f, cell.YOffset + .05f, position.z - .05f), _view.GrassPrefabs[0].transform.rotation, _view.GrassPrefabs);
+                        break;
+                    case PropType.Bush:
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset, position.z), Quaternion.Euler(-90, Random.Range(0, 360), 0), _view.BushPrefabs);
                         break;
                     case PropType.None:
                         break;

@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: World Description
   m_EditorClassIdentifier: 
   Description:
-    X: 8
-    Z: 8
+    X: 10
+    Z: 10
     AreaX: 60
     AreaZ: 60
     NoiseHeight: 0.6
     DetailScale: 3
     ChanceToIncreaseCellOnce: 0.537
     ChanceToIncreaseCellTwice: 0.203
-    TreesCount: 15
+    TreesCount: 55
+    BushesCount: 15
     SmallRocksCount: 50
     RockStructuresCount: 30
     LanternsCount: 10

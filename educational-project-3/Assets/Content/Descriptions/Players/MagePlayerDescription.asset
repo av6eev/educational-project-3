@@ -16,5 +16,10 @@ MonoBehaviour:
     Type: 2
     Prefab: {fileID: 3619604669763629948, guid: 0d1ffda454ed9464983c6fd8d20c02c6,
       type: 3}
+    AnimatorOverrideController: {fileID: 22100000, guid: 80397138ad876e640a2aefddc7da2989,
+      type: 2}
+    MoveTowardsSpeed: 0.06
+    RotateTowardsSpeed: 300
+    MaxHealth: 0
     AttackDamage: 0
     Resistance: 0

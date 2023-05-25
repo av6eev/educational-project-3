@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Bot;
 using Floor;
 using Floor.System;
 using Game;
-using Plugins.DiscordUnity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
+using DiscordAPI = Plugins.DiscordUnity.DiscordUnity.DiscordAPI;
 
 namespace Start
 {
@@ -15,7 +16,7 @@ namespace Start
     {
         private readonly GameManager _manager;
         private readonly StartView _view;
-        
+
         private readonly List<AsyncOperation> _sceneLoader = new();
         private readonly PresenterEngine _presenterEngine = new();
 
@@ -31,9 +32,11 @@ namespace Start
             _manager = manager;
             _view = view;
         }
-        
+
         public void Deactivate()
         {
+            _view.NewGameBtn.onClick.RemoveListener(OnGameStarted);
+            _view.KeyInputField.onValueChanged.RemoveListener(OnKeyInput);
         }
 
         public void Activate()
@@ -42,8 +45,17 @@ namespace Start
             _view.KeyInputField.onValueChanged.AddListener(OnKeyInput);
         }
         
-        private void OnGameStarted()
+        private async void OnGameStarted()
         {
+            if (!await CheckBotKey())
+            {
+                _view.InvalidKeyCanvas.SetActive(true);
+                await Task.Delay(1000);
+                _view.InvalidKeyCanvas.SetActive(false);
+                
+                return;
+            }
+
             _manager.BotModel = new BotModel(_manager);
             _manager.GameModel = new GameModel();
             _manager.FloorModel = new FloorModel();
@@ -67,22 +79,9 @@ namespace Start
             _presenterEngine.Add(new BotPresenter(_manager.BotModel, _manager));
             _presenterEngine.Add(new FloorPresenter(_manager.FloorModel, _manager.GameView.FloorView, _manager));
             
-            var discordComponent = new GameObject("DiscordManager").AddComponent<DiscordManager>();
-            discordComponent.Manager = _manager;
-            discordComponent.BotToken = _botToken;
+            _view.DiscordManager.Manager = _manager;
         }
 
-        private void EndGenerate()
-        {
-            _manager.FixedSystemEngine.Remove(SystemTypes.GenerateWorldSystem);
-            _presenterEngine.Activate();
-        }
-
-        private void OnKeyInput(string value)
-        {
-            _botToken = value;
-        }
-        
         private IEnumerator GetSceneLoadingProgress()
         {
             foreach (var scene in _sceneLoader)
@@ -125,6 +124,23 @@ namespace Start
             GameCoroutines.DisableCoroutine(_spawnCoroutine);
             _view.LoaderCanvas.SetActive(false);
             SceneManager.UnloadSceneAsync((int)SceneIndexes.StartMenu);
+        }
+        
+        private void OnKeyInput(string value)
+        {
+            _botToken = value;
+        }
+        
+        private void EndGenerate()
+        {
+            _manager.FixedSystemEngine.Remove(SystemTypes.GenerateWorldSystem);
+            _presenterEngine.Activate();
+        }
+        
+        private async Task<bool> CheckBotKey()
+        {
+            DiscordAPI.RegisterEventsHandler(_view.DiscordManager);
+            return await DiscordAPI.StartWithBot(_botToken);
         }
     }
 }

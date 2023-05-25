@@ -20,7 +20,6 @@ namespace FOV
             
             Handles.DrawLine(position, position + viewAngle1 * fov.ViewRadius);
             Handles.DrawLine(position, position + viewAngle2 * fov.ViewRadius);
-
             Handles.color = Color.red;
             
             foreach (var visibleTarget in fov.VisibleTargets)

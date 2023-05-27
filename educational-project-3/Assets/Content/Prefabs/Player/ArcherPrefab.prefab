@@ -1493,6 +1493,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4663800106849209291}
+  - {fileID: 4035863723735240895}
   m_Father: {fileID: 7091538184508974687}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1933,3 +1934,85 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 862775353451776873}
   m_maskType: 0
+--- !u!1001 &4578188095339542356
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 7629214705541058341}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.182
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4a9a6ec12522f44c812e84540c3a677, type: 2}
+    - target: {fileID: 919132149155446097, guid: 8e05817974e5f50458c8a9afbac7a687,
+        type: 3}
+      propertyPath: m_Name
+      value: ArcherCape
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8e05817974e5f50458c8a9afbac7a687, type: 3}
+--- !u!4 &4035863723735240895 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8e05817974e5f50458c8a9afbac7a687,
+    type: 3}
+  m_PrefabInstance: {fileID: 4578188095339542356}
+  m_PrefabAsset: {fileID: 0}

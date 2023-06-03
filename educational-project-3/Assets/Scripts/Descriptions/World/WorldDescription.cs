@@ -23,6 +23,8 @@ namespace Descriptions.World
         public int SmallRocksCount = 10;
         public int RockStructuresCount = 2;
         public int LanternsCount = 3;
+        public int MushroomsCount = 5;
+        public int GremlinSkullsCount = 7;
 
         [Header("Game Parameters")] 
         public int MaxPlayersCount = 2;

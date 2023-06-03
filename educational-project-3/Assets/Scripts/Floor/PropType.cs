@@ -9,6 +9,8 @@ namespace Floor
         Lantern,
         Grass,
         Bush,
+        Mushroom,
+        GremlinSkull,
         None,
     }
 }

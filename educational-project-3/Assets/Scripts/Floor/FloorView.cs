@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using Cells;
 using Props.Bush;
 using Props.Grass;
+using Props.GremlinSkull;
 using Props.Lantern;
+using Props.Mushroom;
 using Props.Rock;
 using Props.Tree;
 using UnityEngine;
@@ -22,6 +24,8 @@ namespace Floor
         public List<LanternView> LanternPrefabs;
         public List<GrassView> GrassPrefabs;
         public List<BushView> BushPrefabs;
+        public List<MushroomView> MushroomPrefabs;
+        public List<GremlinSkullView> GremlinSkullPrefabs;
 
         public CellView InitializeCell(Vector3 position, int type)
         {

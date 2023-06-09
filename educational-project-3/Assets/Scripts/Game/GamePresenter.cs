@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Threading.Tasks;
 using Bot;
 using Player.System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utilities;
 
 namespace Game
@@ -24,17 +24,28 @@ namespace Game
         public void Deactivate()
         {
             _model.OnGameStarted -= GameStarted;
+            _model.OnGameEnded -= GameEnded;
             _model.OnTurnChanged -= TurnChanged;
             
             _view.SkipButton.onClick.RemoveListener(TurnChanged);
+            _view.NewGameButton.onClick.RemoveListener(StartNewGame);
         }
 
         public void Activate()
         {
             _model.OnGameStarted += GameStarted;
+            _model.OnGameEnded += GameEnded;
             _model.OnTurnChanged += TurnChanged;
             
             _view.SkipButton.onClick.AddListener(TurnChanged);
+            _view.NewGameButton.onClick.AddListener(StartNewGame);
+        }
+
+        private void GameEnded()
+        {
+            _view.ManageUI("Main", false);
+            _view.ManageUI("End", true);
+            _view.EndGameWinnerTxt.text += _model.ActivePlayer.Name;
         }
 
         private async void GameStarted()
@@ -45,7 +56,7 @@ namespace Game
             _model.TurnTime = _manager.GameDescriptions.World.TurnCooldown;
 
             _view.TurnCooldownTxt.text = _model.ActivePlayer.Name + " " + _manager.GameDescriptions.World.TurnCooldownText + _manager.GameDescriptions.World.TurnCooldown;
-            _view.Enable();
+            _view.ManageUI("Main", true);
             
             await BotCommandHelper.OnChangeTurn(_model.ActivePlayer.Name, _model.ChannelId);
 
@@ -79,6 +90,13 @@ namespace Game
             }
             
             TurnChanged();
+        }
+
+        private void StartNewGame()
+        {
+            _view.DestroyOnUnload();
+
+            SceneManager.LoadSceneAsync((int)SceneIndexes.StartMenu, LoadSceneMode.Single);
         }
     }
 }

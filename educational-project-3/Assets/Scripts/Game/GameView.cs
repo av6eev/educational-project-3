@@ -19,8 +19,13 @@ namespace Game
         public CameraManager CameraManager;
 
         public GameObject UIRoot;
+        public GameObject EndGameUIRoot;
+        
         public TextMeshProUGUI TurnCooldownTxt;
+        public TextMeshProUGUI EndGameWinnerTxt;
+        
         public Button SkipButton;
+        public Button NewGameButton;
 
         private void Update()
         {
@@ -40,14 +45,26 @@ namespace Game
             return view;
         }
 
-        public void Enable()
+        public void ManageUI(string type, bool state)
         {
-            UIRoot.SetActive(true);
+            switch (type)
+            {
+                case "Main":
+                    UIRoot.SetActive(state);
+                    break;
+                case "End":
+                    EndGameUIRoot.SetActive(state);
+                    break;
+                case "All":
+                    UIRoot.SetActive(state);
+                    EndGameUIRoot.SetActive(state);
+                    break;
+            }
         }
 
-        public void Disable()
+        public void DestroyOnUnload()
         {
-            UIRoot.SetActive(false);
+            Destroy(GameObject.Find("DiscordManager"));
         }
     }
 }

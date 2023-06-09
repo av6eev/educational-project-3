@@ -53,10 +53,16 @@ namespace Player
             var damage = _model.AttackDamage * ((100 - enemy.Resistance) / 100);
             
             _view.PlayAttackAnimation();
-
-            enemy.DealDamage(damage);
             
+            enemy.DealDamage(damage);
             await Task.Delay(1000);
+
+            if (enemy.CurrentHealth <= 0)
+            {
+                _manager.GameModel.EndGame();
+                return;
+            }
+            
             _manager.GameModel.ChangeTurn();
         }
 

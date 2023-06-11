@@ -14,6 +14,8 @@ namespace Game
         private readonly GameManager _manager;
         private Coroutine _coroutine;
 
+        private int _pauseCounter = 0;
+        
         public GamePresenter(GameModel model, GameView view, GameManager manager)
         {
             _model = model;
@@ -28,6 +30,7 @@ namespace Game
             _model.OnTurnChanged -= TurnChanged;
             
             _view.SkipButton.onClick.RemoveListener(TurnChanged);
+            _view.PauseButton.onClick.RemoveListener(GamePaused);
             _view.NewGameButton.onClick.RemoveListener(StartNewGame);
         }
 
@@ -38,6 +41,7 @@ namespace Game
             _model.OnTurnChanged += TurnChanged;
             
             _view.SkipButton.onClick.AddListener(TurnChanged);
+            _view.PauseButton.onClick.AddListener(GamePaused);
             _view.NewGameButton.onClick.AddListener(StartNewGame);
         }
 
@@ -97,6 +101,13 @@ namespace Game
             _view.DestroyOnUnload();
 
             SceneManager.LoadSceneAsync((int)SceneIndexes.StartMenu, LoadSceneMode.Single);
+        }
+        
+        private void GamePaused()
+        {
+            Time.timeScale = _pauseCounter % 2 == 0 ? 0f : 1f;
+
+            _pauseCounter++;
         }
     }
 }

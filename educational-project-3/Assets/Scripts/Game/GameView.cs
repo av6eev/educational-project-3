@@ -25,6 +25,7 @@ namespace Game
         public TextMeshProUGUI EndGameWinnerTxt;
         
         public Button SkipButton;
+        public Button PauseButton;
         public Button NewGameButton;
 
         private void Update()

@@ -114,7 +114,7 @@ namespace Player
 
             _view.PlayWalkAnimation(true);
 
-            await Task.Delay(3500);            
+            await Task.Delay(2000);            
             
             _model.Position += moveDirection;
             _model.Direction = Vector3.zero;

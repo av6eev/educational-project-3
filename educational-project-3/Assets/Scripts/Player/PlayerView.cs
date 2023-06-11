@@ -25,6 +25,7 @@ namespace Player
 
         private static readonly int IsWalking = Animator.StringToHash("IsWalking");
         private static readonly int IsAttacking = Animator.StringToHash("IsAttacking");
+        private static readonly int IsDeath = Animator.StringToHash("IsDeath");
 
         private void Start()
         {
@@ -99,6 +100,11 @@ namespace Player
                     VisibleTargets.Add(target);
                 }
             }
+        }
+
+        public void PlayDeathAnimation()
+        {
+            Animator.SetTrigger(IsDeath);
         }
     }
 }

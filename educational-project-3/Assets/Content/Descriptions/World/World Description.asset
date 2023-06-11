@@ -21,7 +21,7 @@ MonoBehaviour:
     DetailScale: 3
     ChanceToIncreaseCellOnce: 0.537
     ChanceToIncreaseCellTwice: 0.203
-    TreesCount: 55
+    TreesCount: 2
     BushesCount: 7
     SmallRocksCount: 30
     RockStructuresCount: 15

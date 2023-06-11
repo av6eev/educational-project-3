@@ -34,7 +34,7 @@ namespace Floor
                 switch (cell.PropType)
                 {
                     case PropType.Tree:
-                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z), Quaternion.Euler(-90, Random.Range(0, 360), 0), _view.TreePrefabs);
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .25f, position.z), Quaternion.Euler(-90, Random.Range(0, 360), 0), _view.TreePrefabs);
                         break;
                     case PropType.SmallRock:
                         _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z),  Quaternion.Euler(0, Random.Range(0, 360), 0), _view.SmallRockPrefabs);
@@ -56,6 +56,12 @@ namespace Floor
                         break;
                     case PropType.Bush:
                         _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset, position.z), Quaternion.Euler(-90, Random.Range(0, 360), 0), _view.BushPrefabs);
+                        break;
+                    case PropType.Mushroom:
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .25f, position.z), Quaternion.Euler(0, Random.Range(0, 360), 0), _view.MushroomPrefabs);
+                        break;
+                    case PropType.GremlinSkull:
+                        _view.InitializeFloorObject(new Vector3(position.x, cell.YOffset + .3f, position.z), Quaternion.Euler(0, Random.Range(0, 360), 0), _view.GremlinSkullPrefabs);
                         break;
                     case PropType.None:
                         break;

@@ -77,6 +77,8 @@ namespace Floor.System
             SetupObjectLocation(PropType.SmallRock, _worldDescription.SmallRocksCount);
             SetupObjectLocation(PropType.RockStructure, _worldDescription.RockStructuresCount);
             SetupObjectLocation(PropType.Lantern, _worldDescription.LanternsCount);
+            SetupObjectLocation(PropType.Mushroom, _worldDescription.MushroomsCount);
+            SetupObjectLocation(PropType.GremlinSkull, _worldDescription.GremlinSkullsCount);
             SetupObjectLocation(PropType.Rock, default, true);
 
             _endGenerate();
@@ -155,7 +157,11 @@ namespace Floor.System
                         if (cell.Id != randomCell || cell is not { IsPlayable: false, IsBorder: false, GroupId: 0, IsEmpty: true }) continue;
                         
                         cell.PropType = type;
-                        cell.IsEmpty = false;
+                        
+                        if (type != PropType.Grass)
+                        {
+                            cell.IsEmpty = false;
+                        }
                     }
                 }
             }

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using Bot;
 using Game;
@@ -12,6 +13,8 @@ namespace Player
         private readonly GameManager _manager;
         private readonly PlayerView _view;
 
+        private Coroutine _deathAnimationCoroutine;
+
         public PlayerPresenter(PlayerModel model, GameManager manager, PlayerView view)
         {
             _model = model;
@@ -25,7 +28,7 @@ namespace Player
             _model.OnPlayerRemoved -= DestroyPlayer;
             _model.OnPlayerMove -= MovePlayer;
             _model.OnPlayerAttack -= AttackEnemy;
-            _model.OnDealDamage -= UpdateHealthBar;
+            _model.OnDealDamage -= DamageApplied;
         }
 
         public void Activate()
@@ -36,12 +39,17 @@ namespace Player
             _model.OnPlayerRemoved += DestroyPlayer;
             _model.OnPlayerMove += MovePlayer;
             _model.OnPlayerAttack += AttackEnemy;
-            _model.OnDealDamage += UpdateHealthBar;
+            _model.OnDealDamage += DamageApplied;
         }
 
-        private void UpdateHealthBar()
+        private void DamageApplied()
         {
             _view.UpdateHealthBar(_model.MaxHealth, _model.CurrentHealth);
+
+            if (!(_model.CurrentHealth <= 0)) return;
+            
+            _view.PlayDeathAnimation();
+            _deathAnimationCoroutine = GameCoroutines.RunCoroutine(GetDeathAnimationProgress());
         }
 
         private async void AttackEnemy()
@@ -53,8 +61,9 @@ namespace Player
             var damage = _model.AttackDamage * ((100 - enemy.Resistance) / 100);
             
             _view.PlayAttackAnimation();
-
             enemy.DealDamage(damage);
+
+            if (!(enemy.CurrentHealth >= 0)) return;
             
             await Task.Delay(1000);
             _manager.GameModel.ChangeTurn();
@@ -88,8 +97,6 @@ namespace Player
                     break;
             }
             
-            Debug.Log(moveDirection);
-            Debug.Log(emoji);
             var position = _model.Position + moveDirection;
             
             cells.TryGetValue(new Vector3(position.x, 0, position.z), out var newCell);
@@ -107,7 +114,7 @@ namespace Player
 
             _view.PlayWalkAnimation(true);
 
-            await Task.Delay(3500);            
+            await Task.Delay(2000);            
             
             _model.Position += moveDirection;
             _model.Direction = Vector3.zero;
@@ -135,6 +142,17 @@ namespace Player
         private void DestroyPlayer()
         {
             _view.DestroyPlayer();
+        }
+           
+        private IEnumerator GetDeathAnimationProgress()
+        {
+            while (_view.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1.0f)
+            {
+                yield return new WaitForFixedUpdate();
+            }
+
+            _manager.GameModel.EndGame();
+            GameCoroutines.DisableCoroutine(_deathAnimationCoroutine);
         }
     }
 }

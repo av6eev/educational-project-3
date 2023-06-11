@@ -39,12 +39,12 @@ namespace Plugins.DiscordUnity
         private void Update()
         {
             DiscordAPI.Update();
-            Manager.SystemEngine.Update(Time.deltaTime);
+            Manager?.SystemEngine.Update(Time.deltaTime);
         }
 
         private void FixedUpdate()
         {
-            Manager.FixedSystemEngine.Update(Time.deltaTime);
+            Manager?.FixedSystemEngine.Update(Time.deltaTime);
         }
 
         public async void OnServerJoined(DiscordServer server) {}

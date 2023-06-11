@@ -7,6 +7,7 @@ namespace Game
     public class GameModel
     {
         public event Action OnGameStarted;
+        public event Action OnGameEnded;
         public event Action OnTurnChanged;
         
         private readonly List<PlayerModel> _players = new();
@@ -34,6 +35,11 @@ namespace Game
             }
             
             OnGameStarted?.Invoke();
+        }
+
+        public void EndGame()
+        {
+            OnGameEnded?.Invoke();
         }
 
         public void ChangeTurn()

@@ -54,13 +54,19 @@ namespace Player
 
         private async void AttackEnemy()
         {
-            if (_view.VisibleTargets.Count == 0) return;
             if (!_model.Id.Equals(_manager.GameModel.ActivePlayer.Id)) return;
+
+            if (_view.VisibleTargets.Count == 0)
+            {
+                _manager.GameModel.ChangeTurn();
+                return;
+            }
             
             var enemy = _manager.GameModel.GetEnemyModel();
             var damage = _model.AttackDamage * ((100 - enemy.Resistance) / 100);
             
-            _view.PlayAttackAnimation();
+            _view.PlayAttackAnimation(_model.ClassType, _view.VisibleTargets[1]);
+
             enemy.DealDamage(damage);
 
             if (!(enemy.CurrentHealth >= 0)) return;

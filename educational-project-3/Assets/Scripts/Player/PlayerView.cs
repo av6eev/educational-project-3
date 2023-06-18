@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Arrow;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,10 @@ namespace Player
         public Image HealthBar;
         public TextMeshPro Text;
         public GameObject Root;
-
+        
+        public Transform ArrowSpawnPoint;
+        public ArrowView ArrowPrefab;
+        
         public LayerMask TargetMask;
         public LayerMask EnvironmentMask;
         
@@ -52,9 +56,19 @@ namespace Player
             Animator.SetBool(IsWalking, state);
         }
         
-        public void PlayAttackAnimation()
+        public void PlayAttackAnimation(PlayerClassType type, Transform target)
         {
             Animator.SetTrigger(IsAttacking);
+
+            if (type == PlayerClassType.Archer)
+            {
+                var arrow = Instantiate(ArrowPrefab, ArrowSpawnPoint.position, Quaternion.Euler(90f, 0, 0));
+
+                if (arrow != null)
+                {
+                    arrow.OnInstantiate(target);
+                }
+            }
         }
 
         public void UpdateHealthBar(float maxHealth, float currentHealth)

@@ -20,6 +20,6 @@ MonoBehaviour:
       type: 2}
     MoveTowardsSpeed: 0.01
     RotateTowardsSpeed: 300
-    MaxHealth: 0
-    AttackDamage: 0
-    Resistance: 0
+    MaxHealth: 100
+    AttackDamage: 10
+    Resistance: 8

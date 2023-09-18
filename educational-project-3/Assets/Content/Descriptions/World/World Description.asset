@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description:
     X: 4
-    Z: 4
+    Z: 8
     AreaX: 40
     AreaZ: 40
     NoiseHeight: 0.6
@@ -28,7 +28,7 @@ MonoBehaviour:
     LanternsCount: 5
     MushroomsCount: 5
     GremlinSkullsCount: 5
-    MaxPlayersCount: 1
+    MaxPlayersCount: 2
     TurnCooldownText: "\u0442\u0432\u043E\u0439 \u0445\u043E\u0434! \u041E\u0441\u0442\u0430\u0432\u0448\u0435\u0435\u0441\u044F
       \u0432\u0440\u0435\u043C\u044F: "
     TurnCooldown: 180

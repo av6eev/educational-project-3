@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using Bot;
 using Player.System;
 using UnityEngine;
@@ -54,8 +55,8 @@ namespace Game
 
         private async void GameStarted()
         {
-            // _manager.GameView.CameraManager.Enable();
-            // await Task.Delay(8700);
+            _manager.GameView.CameraManager.Enable();
+            await Task.Delay(8700);
 
             _model.TurnTime = _manager.GameDescriptions.World.TurnCooldown;
 
